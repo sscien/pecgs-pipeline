@@ -1,0 +1,3 @@
+[submodule "submodules/TinDaisy"]
+	path = submodules/TinDaisy
+	url = https://github.com/ding-lab/TinDaisy.git
