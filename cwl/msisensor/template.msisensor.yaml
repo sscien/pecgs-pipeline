@@ -1,0 +1,12 @@
+microsatellite:
+  class: File
+  path: a/file/path
+minimal_homopolymer_size: a_int
+minimal_microsatellite_size: a_int
+normal_bam:
+  class: File
+  path: a/file/path
+threads: a_int
+tumor_bam:
+  class: File
+  path: a/file/path
