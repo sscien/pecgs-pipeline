@@ -34,7 +34,7 @@ steps:
 - id: msisensor
   in:
   - id: microsatellite
-    source: threads
+    source: microsatellite
   - id: minimal_homopolymer_size
     source: minimal_homopolymer_size
   - id: minimal_microsatellite_size
