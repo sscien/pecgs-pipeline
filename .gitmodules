@@ -4,3 +4,6 @@
 [submodule "submodules/TinJasmine"]
 	path = submodules/TinJasmine
 	url = https://github.com/ding-lab/TinJasmine
+[submodule "submodules/pecgs-fusion"]
+	path = submodules/pecgs-fusion
+	url = https://github.com/estorrs/pecgs-fusion
