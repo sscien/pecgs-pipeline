@@ -7,3 +7,6 @@
 [submodule "submodules/pecgs-fusion"]
 	path = submodules/pecgs-fusion
 	url = https://github.com/estorrs/pecgs-fusion
+[submodule "submodules/pecgs-cnv"]
+	path = submodules/pecgs-cnv
+	url = https://github.com/estorrs/pecgs-cnv
