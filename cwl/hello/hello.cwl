@@ -19,3 +19,4 @@ requirements:
   dockerPull: python:3.6
 - class: ResourceRequirement
   ramMin: 2000
+stdout: output.txt
