@@ -1,22 +1,26 @@
 $namespaces:
   sbg: https://www.sevenbridges.com/
+arguments:
+- position: 2
+  valueFrom: hello.txt
 baseCommand:
-- echo
+- cp
 class: CommandLineTool
 cwlVersion: v1.0
 id: hello
 inputs:
 - id: message
   inputBinding:
-    position: '0'
-  type: string
+    position: '1'
+  type: File
 label: hello
 outputs:
-- id: output
-  type: stdout
+- id: output_message
+  outputBinding:
+    glob: hello.txt
+  type: File
 requirements:
 - class: DockerRequirement
   dockerPull: python:3.6
 - class: ResourceRequirement
   ramMin: 2000
-stdout: output.txt
