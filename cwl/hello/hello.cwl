@@ -2,7 +2,7 @@ $namespaces:
   sbg: https://www.sevenbridges.com/
 arguments:
 - position: 2
-  valueFrom: hello.txt
+  valueFrom: /hello/hello.txt
 baseCommand:
 - cp
 class: CommandLineTool
@@ -17,10 +17,10 @@ label: hello
 outputs:
 - id: output_message
   outputBinding:
-    glob: hello.txt
+    glob: /hello/hello.txt
   type: File
 requirements:
 - class: DockerRequirement
-  dockerPull: python:3.6
+  dockerPull: estorrs/hello:0.0.1
 - class: ResourceRequirement
   ramMin: 2000
