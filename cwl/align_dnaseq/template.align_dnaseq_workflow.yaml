@@ -1,0 +1,38 @@
+bam_name: a_string
+job_uuid: a_string
+known_snp:
+  class: File
+  path: path/to/vcf.gz
+  secondaryFiles:
+  - class: File
+    path: path/to/vcf.gz.tbi
+readgroup_fastq_pe_file_list:
+- forward_fastq:
+    class: File
+    path: path/to/R1/fastq
+  readgroup_meta:
+    ID: input_id
+    PL: ILLUMINA
+    SM: input_sample_id
+  reverse_fastq:
+    class: File
+    path: path/to/R2/fastq
+reference_sequence:
+  class: File
+  path: path/to/GRCh38.d1.vd1.fa
+  secondaryFiles:
+  - class: File
+    path: path/to/GRCh38.d1.vd1.fa.amb
+  - class: File
+    path: path/to/GRCh38.d1.vd1.fa.ann
+  - class: File
+    path: path/to/GRCh38.d1.vd1.fa.bwt
+  - class: File
+    path: path/to/GRCh38.d1.vd1.fa.fai
+  - class: File
+    path: path/to/GRCh38.d1.vd1.fa.pac
+  - class: File
+    path: path/to/GRCh38.d1.vd1.fa.sa
+  - class: File
+    path: path/to/GRCh38.d1.vd1.dict
+thread_count: a_int
