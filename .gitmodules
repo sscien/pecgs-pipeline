@@ -10,3 +10,6 @@
 [submodule "submodules/pecgs-cnv"]
 	path = submodules/pecgs-cnv
 	url = https://github.com/estorrs/pecgs-cnv
+[submodule "submodules/gdc-dnaseq-cwl"]
+	path = submodules/gdc-dnaseq-cwl
+	url = https://github.com/NCI-GDC/gdc-dnaseq-cwl
