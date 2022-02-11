@@ -12,11 +12,15 @@ readgroup_fastq_pe_file_list:
     path: path/to/R1/fastq
   readgroup_meta:
     ID: input_id
+    LB: library_id
     PL: ILLUMINA
+    PU: pu
     SM: input_sample_id
   reverse_fastq:
     class: File
     path: path/to/R2/fastq
+readgroup_fastq_se_file_list: []
+readgroups_bam_file_list: []
 reference_sequence:
   class: File
   path: path/to/GRCh38.d1.vd1.fa

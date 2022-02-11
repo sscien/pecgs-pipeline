@@ -12,6 +12,14 @@ inputs:
     type:
       items: ../../submodules/gdc-dnaseq-cwl/tools/readgroup.yml#readgroup_fastq_file
       type: array
+  readgroup_fastq_se_file_list:
+    type:
+      items: ../../submodules/gdc-dnaseq-cwl/tools/readgroup.yml#readgroup_fastq_file
+      type: array
+  readgroups_bam_file_list:
+    type:
+      items: ../../submodules/gdc-dnaseq-cwl/tools/readgroup.yml#readgroups_bam_file
+      type: array
   reference_sequence:
     secondaryFiles:
     - .amb
