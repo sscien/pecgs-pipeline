@@ -39,7 +39,10 @@ inputs:
 label: align_dnaseq
 outputs:
   output_bam:
-    outputSource: gatk_applybqsr/output_bam
+    outputSource: sort_and_index_bam/output_bam
+    type: File
+  output_bam_index:
+    outputSource: sort_and_index_bam/output_bam_index
     type: File
 requirements:
 - class: InlineJavascriptRequirement
@@ -175,3 +178,11 @@ steps:
     - o2_file_list
     run: ../../submodules/gdc-dnaseq-cwl/subworkflows/utils/readgroups_bam_to_readgroups_fastq_lists.cwl
     scatter: readgroups_bam_file
+  sort_and_index_bam:
+    in:
+      cpu: thread_count
+      input_bam: gatk_applybqsr/output_bam
+    out:
+    - output_bam
+    - output_bam_index
+    run: ../../submodules/sort_and_index_bam/cwl/sort_and_index_bam.cwl
