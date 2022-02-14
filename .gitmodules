@@ -16,3 +16,6 @@
 [submodule "submodules/sort_and_index_bam"]
 	path = submodules/sort_and_index_bam
 	url = https://github.com/estorrs/sort_and_index_bam
+[submodule "submodules/align-dnaseq"]
+	path = submodules/align-dnaseq
+	url = https://github.com/estorrs/align-dnaseq
