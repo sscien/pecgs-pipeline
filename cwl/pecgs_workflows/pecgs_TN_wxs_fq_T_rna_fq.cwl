@@ -161,58 +161,57 @@ inputs:
     type: string?
 label: pecgs_TN_wxs_fq_T_rna_fq
 outputs:
-  filtered_fusions:
-    outputSource: run_fusion/filtered_fusions
-    type: File
-  gene_level_cnv:
-    outputSource: run_cnv/gene_level_cnv
-    type: File
-  msisensor_output_dis:
-    outputSource: run_msisensor/output_dis
-    type: File
-  msisensor_output_germline:
-    outputSource: run_msisensor/output_germline
-    type: File
-  msisensor_output_somatic:
-    outputSource: run_msisensor/output_somatic
-    type: File
-  msisensor_output_summary:
-    outputSource: run_msisensor/output_summary
-    type: File
-  normal_wxs_output_bam:
-    outputSource: align_normal_wxs/output_bam
-    secondaryFiles:
-    - ^.bai
-    type: File
-  tindaisy_output_maf_clean:
-    outputSource: run_tindaisy/output_maf_clean
-    type: File
-  tindaisy_output_vcf_all:
-    outputSource: run_tindaisy/output_vcf_all
-    type: File
-  tindaisy_output_vcf_clean:
-    outputSource: run_tindaisy/output_vcf_clean
-    type: File
-  tinjasmine_output_maf_clean:
-    outputSource: run_tinjasmine/clean_MAF
-    type: File
-  tinjasmine_output_vcf_all:
-    outputSource: run_tinjasmine/allCall_VCF
-    type: File
-  tinjasmine_output_vcf_clean:
-    outputSource: run_tinjasmine/clean_VCF
-    type: File
-  total_fusions:
-    outputSource: run_fusion/total_fusions
-    type: File
-  tumor_wxs_output_bam:
-    outputSource: align_tumor_wxs/output_bam
-    secondaryFiles:
-    - ^.bai
-    type: File
+- id: tumor_wxs_output_bam
+  outputSource: align_tumor_wxs/output_bam
+  secondaryFiles:
+  - ^.bai
+  type: File
+- id: normal_wxs_output_bam
+  outputSource: align_normal_wxs/output_bam
+  secondaryFiles:
+  - ^.bai
+  type: File
+- id: filtered_fusions
+  outputSource: run_fusion/filtered_fusions
+  type: File
+- id: total_fusions
+  outputSource: run_fusion/total_fusions
+  type: File
+- id: gene_level_cnv
+  outputSource: run_cnv/gene_level_cnv
+  type: File
+- id: msisensor_output_summary
+  outputSource: run_msisensor/output_summary
+  type: File
+- id: msisensor_output_dis
+  outputSource: run_msisensor/output_dis
+  type: File
+- id: msisensor_output_germline
+  outputSource: run_msisensor/output_germline
+  type: File
+- id: msisensor_output_somatic
+  outputSource: run_msisensor/output_somatic
+  type: File
+- id: tindaisy_output_maf_clean
+  outputSource: run_tindaisy/output_maf_clean
+  type: File
+- id: tindaisy_output_vcf_clean
+  outputSource: run_tindaisy/output_vcf_clean
+  type: File
+- id: tindaisy_output_vcf_all
+  outputSource: run_tindaisy/output_vcf_all
+  type: File
+- id: tinjasmine_output_maf_clean
+  outputSource: run_tinjasmine/clean_MAF
+  type: File
+- id: tinjasmine_output_vcf_clean
+  outputSource: run_tinjasmine/clean_VCF
+  type: File
+- id: tinjasmine_output_vcf_all
+  outputSource: run_tinjasmine/allCall_VCF
+  type: File
 requirements:
 - class: InlineJavascriptRequirement
-- class: MultipleInputFeatureRequirement
 - class: ScatterFeatureRequirement
 - class: StepInputExpressionRequirement
 - class: SubworkflowFeatureRequirement
