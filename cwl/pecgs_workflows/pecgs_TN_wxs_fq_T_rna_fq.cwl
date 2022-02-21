@@ -275,9 +275,9 @@ steps:
     source: sample
   - id: cpu
     source: cpu
-  - id: fq1
+  - id: fq_1
     source: tumor_rna_fq_1
-  - id: fq2
+  - id: fq_2
     source: tumor_rna_fq_2
   - id: filter_database
     source: filter_database
