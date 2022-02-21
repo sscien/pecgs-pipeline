@@ -211,11 +211,7 @@ outputs:
 - id: tinjasmine_output_vcf_all
   outputSource: run_tinjasmine/allCall_VCF
   type: File
-requirements:
-- class: InlineJavascriptRequirement
-- class: ScatterFeatureRequirement
-- class: StepInputExpressionRequirement
-- class: SubworkflowFeatureRequirement
+requirements: []
 steps:
 - id: align_tumor_wxs
   in:
