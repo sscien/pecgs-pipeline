@@ -2,163 +2,164 @@ class: Workflow
 cwlVersion: v1.0
 id: pecgs_TN_wxs_fq_T_rna_fq
 inputs:
-  Canonical_BED:
-    type: File
-  ROI_BED:
-    type: File
-  af_config:
-    type: File
-  assembly:
-    type: string
-  bwts:
-    type: Directory
-  call_regions:
-    type: File
-  canonical_BED:
-    type: File
-  centromere:
-    type: File
-  centromere_bed:
-    type: File
-  classification_config:
-    type: File
-  clinvar_annotation:
-    type: File
-  common_biallelic:
-    type: File
-  cpu:
-    default: 40
-    type: int?
-  filter_database:
-    type: Directory
-  fusion_annotator_dir:
-    type: Directory
-  gatk_filter_config:
-    type: File
-  genome_db:
-    type: Directory
-  genome_lib_dir:
-    type: Directory
-  integrate_annotations:
-    type: File
-  integrate_executable:
-    type: File
-  integrate_fasta:
-    type: File
-  known_sites:
-    secondaryFiles:
-    - .tbi
-    type: File
-  microsatellite:
-    type: File
-  minimal_homopolymer_size:
-    default: 1
-    type: int?
-  minimal_microsatellite_size:
-    default: 1
-    type: int?
-  normal_barcode:
-    default: $(inputs.sample).N
-    type: string?
-  normal_sample:
-    default: $(inputs.sample).WXS.N
-    type: string?
-  normal_wxs_fq_1:
-    type: File
-  normal_wxs_fq_2:
-    type: File
-  pindel_config:
-    type: File
-  pindel_config_template:
-    type: File
-  pindel_filter_config:
-    type: File
-  pool_of_normals:
-    type: File
-  protein_coding_gene:
-    type: File
-  reference:
-    secondaryFiles:
-    - .amb
-    - .ann
-    - .bwt
-    - .fai
-    - .pac
-    - .sa
-    - ^.dict
-    type: File
-  reference_dir:
-    type: Directory
-  rescue_clinvar:
-    default: false
-    type: boolean?
-  rescue_cosmic:
-    default: false
-    type: boolean?
-  sample: string
-  sample_barcode:
-    default: $(inputs.sample)
-    type: string?
-  strelka_config:
-    type: File
-  target_interval_list:
-    type: File
-  tindaisy_chrlist:
-    type: File
-  tinjasmine_chrlist:
-    type: File
-  tumor_barcode:
-    default: $(inputs.sample).T
-    type: string?
-  tumor_rna_fq_1:
-    type: File
-  tumor_rna_fq_2:
-    type: File
-  tumor_sample:
-    default: $(inputs.sample).WXS.T
-    type: string?
-  tumor_wxs_fq_1:
-    type: File
-  tumor_wxs_fq_2:
-    type: File
-  varscan_config:
-    type: File
-  varscan_filter_config:
-    type: File
-  vep_cache_gz:
-    type: File
-  vep_cache_version:
-    type: string
-  wxs_normal_flowcell:
-    default: flowcellABCDE
-    type: string?
-  wxs_normal_index_sequencer:
-    default: sequencerABCDE
-    type: string?
-  wxs_normal_lane:
-    default: '1'
-    type: string?
-  wxs_normal_library_preparation:
-    default: lib1
-    type: string?
-  wxs_normal_platform:
-    default: ILLUMINA
-    type: string?
-  wxs_tumor_flowcell:
-    default: flowcellABCDE
-    type: string?
-  wxs_tumor_index_sequencer:
-    default: sequencerABCDE
-    type: string?
-  wxs_tumor_lane:
-    default: '1'
-    type: string?
-  wxs_tumor_library_preparation:
-    default: lib1
-    type: string?
-  wxs_tumor_platform:
-    default: ILLUMINA
-    type: string?
+- id: sample
+  type: string
+- default: 40
+  id: cpu
+  type: int?
+- id: tumor_wxs_fq_1
+  type: File
+- id: tumor_wxs_fq_2
+  type: File
+- id: normal_wxs_fq_1
+  type: File
+- id: normal_wxs_fq_2
+  type: File
+- id: tumor_rna_fq_1
+  type: File
+- id: tumor_rna_fq_2
+  type: File
+- default: $(inputs.sample).WXS.T
+  id: tumor_sample
+  type: string?
+- default: $(inputs.sample).WXS.N
+  id: normal_sample
+  type: string?
+- id: known_sites
+  secondaryFiles:
+  - .tbi
+  type: File
+- id: reference
+  secondaryFiles:
+  - .amb
+  - .ann
+  - .bwt
+  - .fai
+  - .pac
+  - .sa
+  - ^.dict
+  type: File
+- default: flowcellABCDE
+  id: wxs_normal_flowcell
+  type: string?
+- default: '1'
+  id: wxs_normal_lane
+  type: string?
+- default: sequencerABCDE
+  id: wxs_normal_index_sequencer
+  type: string?
+- default: lib1
+  id: wxs_normal_library_preparation
+  type: string?
+- default: ILLUMINA
+  id: wxs_normal_platform
+  type: string?
+- default: flowcellABCDE
+  id: wxs_tumor_flowcell
+  type: string?
+- default: '1'
+  id: wxs_tumor_lane
+  type: string?
+- default: sequencerABCDE
+  id: wxs_tumor_index_sequencer
+  type: string?
+- default: lib1
+  id: wxs_tumor_library_preparation
+  type: string?
+- default: ILLUMINA
+  id: wxs_tumor_platform
+  type: string?
+- id: genome_lib_dir
+  type: Directory
+- id: genome_db
+  type: Directory
+- id: bwts
+  type: Directory
+- id: integrate_executable
+  type: File
+- id: integrate_fasta
+  type: File
+- id: integrate_annotations
+  type: File
+- id: filter_database
+  type: Directory
+- id: fusion_annotator_dir
+  type: Directory
+- id: reference_dir
+  type: Directory
+- id: target_interval_list
+  type: File
+- id: common_biallelic
+  type: File
+- id: protein_coding_gene
+  type: File
+- id: pool_of_normals
+  type: File
+- id: microsatellite
+  type: File
+- default: 1
+  id: minimal_homopolymer_size
+  type: int?
+- default: 1
+  id: minimal_microsatellite_size
+  type: int?
+- default: false
+  id: rescue_clinvar
+  type: boolean?
+- default: false
+  id: rescue_cosmic
+  type: boolean?
+- id: vep_cache_version
+  type: string
+- id: vep_cache_gz
+  type: File
+- id: clinvar_annotation
+  type: File
+- id: classification_config
+  type: File
+- id: af_config
+  type: File
+- id: call_regions
+  type: File
+- id: canonical_BED
+  type: File
+- default: $(inputs.sample).N
+  id: normal_barcode
+  type: string?
+- default: $(inputs.sample).T
+  id: tumor_barcode
+  type: string?
+- id: tindaisy_chrlist
+  type: File
+- id: strelka_config
+  type: File
+- id: centromere_bed
+  type: File
+- id: assembly
+  type: string
+- id: varscan_config
+  type: File
+- id: pindel_config
+  type: File
+- default: $(inputs.sample)
+  id: sample_barcode
+  type: string?
+- id: centromere
+  type: File
+- id: tinjasmine_chrlist
+  type: File
+- id: Canonical_BED
+  type: File
+- id: ROI_BED
+  type: File
+- id: varscan_filter_config
+  type: File
+- id: pindel_filter_config
+  type: File
+- id: pindel_config_template
+  type: File
+- id: gatk_filter_config
+  type: File
 label: pecgs_TN_wxs_fq_T_rna_fq
 outputs:
 - id: tumor_wxs_output_bam
