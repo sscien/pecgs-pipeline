@@ -220,14 +220,14 @@ steps:
   align_normal_wxs:
     in:
       cpu: cpu
-      flowcell: flowcell
+      flowcell: wxs_normal_flowcell
       fq_1: normal_wxs_fq_1
       fq_2: normal_wxs_fq_1
-      index_sequencer: index_sequencer
+      index_sequencer: wxs_normal_index_sequencer
       known_sites: known_sites
-      lane: lane
-      library_preparation: library_preparation
-      platform: platform
+      lane: wxs_normal_lane
+      library_preparation: wxs_normal_library_preparation
+      platform: wxs_normal_platform
       reference: reference
       sample: normal_sample
     out:
@@ -236,14 +236,14 @@ steps:
   align_tumor_wxs:
     in:
       cpu: cpu
-      flowcell: flowcell
+      flowcell: wxs_tumor_flowcell
       fq_1: tumor_wxs_fq_1
       fq_2: tumor_wxs_fq_1
-      index_sequencer: index_sequencer
+      index_sequencer: wxs_tumor_index_sequencer
       known_sites: known_sites
-      lane: lane
-      library_preparation: library_preparation
-      platform: platform
+      lane: wxs_tumor_lane
+      library_preparation: wxs_tumor_library_preparation
+      platform: wxs_tumor_platform
       reference: reference
       sample: tumor_sample
     out:
