@@ -14,8 +14,6 @@ COPY . /pecgs-pipeline
 
 ENV PATH="/miniconda/envs/pecgs/bin:$PATH"
 
-RUN echo 'hello'
-
 RUN pip install git+https://github.com/estorrs/wombat
 
 CMD /bin/bash
