@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('mode', type=str, choices=['make-run', 'tidy-run', 'summarize-run'],
     help='Which command to execute. make-run will generate scripts needed to run pipeline. tidy-run will clean up large, uneccessary input files. summarize-run will create summary files with run metadata.')
 
-parser.add_argument('pipeline_version', type=str, choices=PIPELINE_IDENTIFIERS,
+parser.add_argument('pipeline_name', type=str, choices=PIPELINE_IDENTIFIERS,
     help='Which pipeline version to run.')
 
 parser.add_argument('run_list', type=str,
@@ -62,9 +62,14 @@ def make_run():
     fp = os.path.realpath(__file__)
     tool_root = '/'.join(fp.split('/')[:-2])
 
-    if args.pipeline_version == 'pecgs_TN_wxs_fq_T_rna_fq':
-        start_cmds, server_cmds, job_cmds = pecgs.from_run_list_TN_wxs_fq_T_rna_fq(
-            run_map, args.run_dir, tool_root, sequencing_info=sequencing_info,
+    if args.pipeline_name == 'pecgs_TN_wxs_fq_T_rna_fq':
+        start_cmds, server_cmds, job_cmds = pecgs.from_run_list(
+            run_map, args.run_dir, tool_root, args.pipeline_name,
+            sequencing_info=sequencing_info,
+            proxy_run_dir=args.proxy_run_dir)
+    elif args.pipeline_name == 'pecgs_TN_wxs_bam_T_rna_fq':
+        start_cmds, server_cmds, job_cmds = pecgs.from_run_list(
+            run_map, args.run_dir, tool_root, args.pipeline_name,
             proxy_run_dir=args.proxy_run_dir)
 
 
@@ -75,7 +80,7 @@ def tidy_run():
 def summarize_run():
     run_list = pd.read_csv(args.run_list, sep='\t', index_col='run_id')
     analysis_summary, run_summary = pecgs.generate_analysis_summary(
-        run_list, args.run_dir, args.pipeline_version)
+        run_list, args.run_dir, args.pipeline_name)
 
     analysis_summary.to_csv(os.path.join(
         args.run_dir, 'analysis_summary.txt'), sep='\t', index=False)
