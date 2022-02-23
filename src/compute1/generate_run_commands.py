@@ -60,7 +60,7 @@ def make_run():
 
     # get pecgs-pipeline root
     fp = os.path.realpath(__file__)
-    tool_root = '/'.join(fp.split('/')[:-2])
+    tool_root = '/'.join(fp.split('/')[:-3])
 
     if args.pipeline_name == 'pecgs_TN_wxs_fq_T_rna_fq':
         start_cmds, server_cmds, job_cmds = pecgs.from_run_list(
