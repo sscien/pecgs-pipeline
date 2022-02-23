@@ -8,7 +8,17 @@ import wombat.pecgs as pecgs
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
+PIPELINE_IDENTIFIERS = [
+    'pecgs_TN_wxs_fq_T_rna_fq',
+##     'pecgs_TN_wxs_bam_T_rna_fq',
+##     'pecgs_TN_wxs_fq',
+##     'pecgs_TN_wxs_bam',
+]
+
 parser = argparse.ArgumentParser()
+
+parser.add_argument('pipeline_version', type=str, choices=PIPELINE_IDENTIFIERS,
+    help='Which pipeline version to run.')
 
 parser.add_argument('run_list', type=str,
     help='Filepath of table containing run inputs.')
@@ -49,9 +59,10 @@ def main():
     fp = os.path.realpath(__file__)
     tool_root = '/'.join(fp.split('/')[:-2])
 
-    start_cmds, server_cmds, job_cmds = pecgs.from_run_list_TN_wxs_fq_T_rna_fq(
-        run_map, args.run_dir, tool_root, sequencing_info=sequencing_info,
-        proxy_run_dir=args.proxy_run_dir)
+    if args.pipeline_version == 'pecgs_TN_wxs_fq_T_rna_fq':
+        start_cmds, server_cmds, job_cmds = pecgs.from_run_list_TN_wxs_fq_T_rna_fq(
+            run_map, args.run_dir, tool_root, sequencing_info=sequencing_info,
+            proxy_run_dir=args.proxy_run_dir)
 
 
 if __name__ == '__main__':
