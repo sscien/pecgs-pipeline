@@ -10,12 +10,15 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 PIPELINE_IDENTIFIERS = [
     'pecgs_TN_wxs_fq_T_rna_fq',
-##     'pecgs_TN_wxs_bam_T_rna_fq',
-##     'pecgs_TN_wxs_fq',
-##     'pecgs_TN_wxs_bam',
+    'pecgs_TN_wxs_bam_T_rna_fq',
+#    'pecgs_TN_wxs_fq',
+#    'pecgs_TN_wxs_bam',
 ]
 
 parser = argparse.ArgumentParser()
+
+parser.add_argument('mode', type=str, choices=['make-run', 'tidy-run', 'summarize-run'],
+    help='Which command to execute. make-run will generate scripts needed to run pipeline. tidy-run will clean up large, uneccessary input files. summarize-run will create summary files with run metadata.')
 
 parser.add_argument('pipeline_version', type=str, choices=PIPELINE_IDENTIFIERS,
     help='Which pipeline version to run.')
@@ -42,7 +45,7 @@ parser.add_argument('--additional-volumes', type=str,
 args = parser.parse_args()
 
 
-def main():
+def make_run():
     run_list = pd.read_csv(args.run_list, sep='\t', index_col='run_id')
     run_map = run_list.transpose().to_dict()
     run_map = {k: {c.replace('.filepath', ''): val
@@ -63,6 +66,30 @@ def main():
         start_cmds, server_cmds, job_cmds = pecgs.from_run_list_TN_wxs_fq_T_rna_fq(
             run_map, args.run_dir, tool_root, sequencing_info=sequencing_info,
             proxy_run_dir=args.proxy_run_dir)
+
+
+def tidy_run():
+    pecgs.tidy_run(args.run_dir, os.path.join(args.run_dir, '4.tidy_run.sh'))
+
+
+def summarize_run():
+    run_list = pd.read_csv(args.run_list, sep='\t', index_col='run_id')
+    analysis_summary, run_summary = pecgs.generate_analysis_summary(
+        run_list, args.run_dir, args.pipeline_version)
+
+    analysis_summary.to_csv(os.path.join(
+        args.run_dir, 'analysis_summary.txt'), sep='\t', index=False)
+    run_summary.to_csv(os.path.join(
+        args.run_dir, 'run_summary.txt'), sep='\t', index=False)
+
+
+def main():
+    if args.mode == 'make-run':
+        make_run()
+    elif args.mode == 'tidy-run':
+        tidy_run()
+    elif args.mode == 'summarize-run':
+        summarize_run()
 
 
 if __name__ == '__main__':
