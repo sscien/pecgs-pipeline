@@ -240,7 +240,7 @@ steps:
   - id: tumor_bam
     source: tumor_wxs_bam
   - id: normal_bam
-    source: tumor_normal_bam
+    source: normal_wxs_bam
   - id: reference_fasta
     source: reference
   - id: pindel_config
