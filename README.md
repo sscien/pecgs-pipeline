@@ -159,7 +159,7 @@ Following execution of this command, a directory should now exist at whatever pa
 
 `inputs` holds input configs and files used while running the pipeline. `runs` is the directory where all runs will execute. `logs` will contain the log file for each run in the run list.
 
-To start the run open a new compute1 terminal (i.e. not inside a running container).
+To start the run **open a new compute1 terminal** (i.e. not the same terminal running the container that was created in the step above).
 
 Then navigate to RUN_DIR. From inside RUN_DIR run `1.start_server.sh`.
 
@@ -262,7 +262,10 @@ optional arguments:
 
 ## Common Issues
 
-tbd
++ Getting a `bash: /usr/bin/java: No such file or directory` error when running `2.start_cromwell.sh`
+  + This likely means `1.start_server.sh` was run from inside an already running container. Step 1 must not be run from a running container/interactive session.
+
+
 
 
 
