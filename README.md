@@ -40,7 +40,7 @@ The following tools are incorporated into the pecgs-pipeline:
 
 #### Inputs
 
-There are multiple pipeline variants that are dependent on available input data types. Currently there are only two variants, but more will be available soon.
+There are multiple pipeline variants that are dependent on available input data types. Currently there are only three variants, but more will be available soon.
 
 The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/MMRF_1250/run_list.txt). This is a tab-sperated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
 
@@ -48,8 +48,8 @@ The inputs to the pipeline are specified in a **run list** file. See an example 
 
 + run_id
   + a unique identifier for each sample being run in the batch. This id must be unique among samples in the batch. It is recommended the `run_id` be a concatenation of the `sample_id` and `run_uuid`, i.e. `{sample_id}_{run_uuid}`.
-+ sample_id
-  + sample name of the sample being run.
++ case_id
+  + case name of the case being run.
 + run_uuid
   + [universally unique identifier (UUID)](https://en.wikipedia.org/wiki/Universally_unique_identifier) for the run. This identifier is for tracking purposes, so if you don't care too much about that you can just use integers or make up a random string here. For PE-CGS runs please use a valid uuid. In python this can be done using [uuid.uuid4()](https://docs.python.org/3/library/uuid.html) and in R with [UUIDgenerate](https://rdrr.io/cran/uuid/man/UUIDgenerate.html)
 
@@ -60,50 +60,56 @@ These columns will change depending on which pipeline variant is being used and 
 
 The following pipelines are available:
 
-+ **pecgs_TN_wxs_fq_T_rna_fq**
++ **pecgs_TN_wxs_fq**
   + inputs
     + Tumor WXS fastqs
     + Normal WXS fastqs
-    + Tumor RNA-seq fastqs
   + run list columns
-    + `run_id`, `sample_id`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
-  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/ht191/run_list.txt)
-+ **pecgs_TN_wxs_bam_T_rna_fq**
+    + `run_id`, `case_id`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
+  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_fq_ht191/run_list.txt)
++ **pecgs_TN_wxs_bam**
   + inputs
     + Tumor WXS bam
     + Normal WXS bam
+  + run list columns
+    + `run_id`, `case_id`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
+  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam_C3L-00677/run_list.txt)
++ **pecgs_T_rna_fq**
+  + inputs
     + Tumor RNA-seq fastqs
   + run list columns
-    + `run_id`, `sample_id`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
-  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/MMRF_1250/run_list.txt)
+    + `run_id`, `case_id`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`
+  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_T_rna_fq_ht191/run_list.txt)
 
 #### Outputs
 
 The pecgs pipelines output a variety of files associated with the various tools incorporated in the pipeline.
 
-The outputs are the following:
+The outputs are the following and seperated by pipeline input data type:
 
-+ DNA-seq alignment (input dependent)
-  + aligned, sorted, and indexed wxs tumor bam
-  + aligned, sorted, and indexed wxs normal bam
-+ Somatic variant calling
-  + output_vcf_all
-  + output_vcf_clean
-  + output_maf_clean
-+ Germline variant calling
-  + output_vcf_all
-  + output_vcf_clean
-  + output_maf_clean
-+ Fusions
-  + filtered_fusions
-  + total_fusions
-+ CNV
-  + gene_level_cnv
-+ Microsatellite instability
-  + output_summary
-  + output_dis
-  + output_somatic
-  + output_germline
++ **WXS**
+  + DNA-seq alignment (input dependent)
+    + aligned, sorted, and indexed wxs tumor bam
+    + aligned, sorted, and indexed wxs normal bam
+  + Somatic variant calling
+    + output_vcf_all
+    + output_vcf_clean
+    + output_maf_clean
+  + Germline variant calling
+    + output_vcf_all
+    + output_vcf_clean
+    + output_maf_clean
+  + CNV
+    + gene_level_cnv
+  + Microsatellite instability
+    + output_summary
+    + output_dis
+    + output_somatic
+    + output_germline
++ **RNA-seq**
+  + Fusions
+    + filtered_fusions
+    + total_fusions
 
 If you require an intermediate output for any of the tools, they can be extracted from the cromwell working directory of the sample of interest. This run directory is listed in `run_summary.txt`
 
@@ -120,13 +126,13 @@ cd pecgs-pipeline/src/compute1
 
 There are three main steps to running the pecgs pipelines: 1) generation of run directory/scripts required to run the pipeline, 2) removal of large unnecessary intermediate files generated during pipeline run, and 3) generation of pipeline run summary files.
 
-Compute1 will only allow a small number of jobs to run at the same time by default. To allow for more jobs to run in parallel you will need to adjust the number of jobs that can be run by the default job group. To do this run the below command (replace USERNAME with your compute1 username and N_JOBS with how many jobs you would like to run in parallel). A value of N_JOBS around 25-50 is usually good (this number is NOT how many samples will be run in parallel, but how many pipeline steps accross samples will be run in parallel. You may want to increase or decrease this number depending on how many samples you want to run in parallel.
+Compute1 will only allow a small number of jobs to run at the same time by default. To allow for more jobs to run in parallel you will need to adjust the number of jobs that can be run by the default job group. To do this run the below command (replace USERNAME with your compute1 username and N_JOBS with how many jobs you would like to run in parallel). A value of N_JOBS around ~25 is usually good (this number is NOT how many samples will be run in parallel, but how many pipeline steps accross samples will be run in parallel. You may want to increase or decrease this number depending on how many samples you want to run in parallel.
 
 ```bash
 bgmod -L N_JOBS /USERNAME/default
 ```
 
-You will also need **3** compute1 terminals open. I strongly recommend running from within a TMUX session to prevent interactive jobs from dying.
+You will also need at least **3** compute1 terminals open. I strongly recommend running from within a TMUX session.
 
 For example:
 
@@ -147,7 +153,7 @@ NOTE: if the directory you intend to use for pipeline outputs is not in `/storag
 
 You should now be inside a running container.
 
-To generate the run directory, execute the following command. Replace PIPELINE_NAME with the pipeline variant you would like to run (i.e. pecgs_TN_wxs_bam_T_rna_fq), RUN_LIST with the filepath of the run list describing samples you would like to run (see inputs section for more details), and RUN_DIR with the absolute filepath where you would like the runs to execute
+To generate the run directory, execute the following command. Replace PIPELINE_NAME with the pipeline variant you would like to run (i.e. pecgs_TN_wxs_bam), RUN_LIST with the filepath of the run list describing samples you would like to run (see inputs section for more details), and RUN_DIR with the absolute filepath where you would like the runs to execute
 
 ```bash
 python generate_run_commands.py make-run PIPELINE_NAME RUN_LIST RUN_DIR
@@ -175,7 +181,7 @@ bash 2.start_cromwell.sh
 
 These two commands will start the cromwell server that is reponsible for coordinating the running of different samples.
 
-After running the above commands, open another new compute1 terminal (i.e. not inside the running container).
+After running the above commands, **open another new compute1 terminal** (i.e. not inside the running container).
 
 Now navigate back to RUN_DIR and run 3.run_jobs.sh`.
 
@@ -193,7 +199,7 @@ When all jobs are finished, run steps 2 and 3.
 
 #### Step 2: Deletion of large intermediate files
 
-Cromwell leaves behind a lot of intermediary files that can be quite large. To clean up the workflow directory run the following command from the terminal at the beginning of step 1 (the one inside pecgs-pipeline/src/compute1).
+Cromwell leaves behind a lot of intermediary files that can be quite large. To clean up the workflow directory run the following command from **the first terminal used at the beginning of step 1**.
 
 ```bash
 python generate_run_commands.py tidy-run PIPELINE_NAME RUN_LIST RUN_DIR
@@ -201,7 +207,11 @@ python generate_run_commands.py tidy-run PIPELINE_NAME RUN_LIST RUN_DIR
 
 There should now be a file called `4.tidy_run.sh` in RUN_DIR.
 
-In a compute1 terminal not inside a running container run this script to delete large intermediary files.
+This file will contain commands to remove all **finished and successfully completed** pipeline runs. If you have multiple runs in your run_list then only runs that finished and completed successfully will have files to be deleted inside `4.tidy_run.sh`.
+
+If you are performing a large number of runs it is usually a good idea to periodically run the above command to clean out intermediarry files, otherwise they may fill up memory in whatever directory you are using to execute your runs.
+
+To run `4.tidy_run.sh`, in a compute1 terminal not inside a running container run this script to delete large intermediary files.
 
 ```bash
 bash 4.tidy_run.sh
@@ -211,13 +221,13 @@ bash 4.tidy_run.sh
 
 The pecgs-pipeline also has tooling to track output files and run metadata.
 
-To generate result files run the following command from the terminal at the beginning of step 1 (the one inside pecgs-pipeline/src/compute1).
+To generate result files run the following command from the terminal at the beginning of step 1.
 
 ```bash
 python generate_run_commands.py summarize-run PIPELINE_NAME RUN_LIST RUN_DIR
 ```
 
-After running this command, there should be three new files in RUN_DIR: `analysis_summary.txt`, `run_summary.txt`, and `runlist.txt`.
+After running this command, there should be three new files in RUN_DIR (assuming there are runs that have successfully completed): `analysis_summary.txt`, `run_summary.txt`, and `runlist.txt`.
 
 + `analysis_summary.txt`
   + A tab-seperated txt file containing output files and various metadata.
@@ -226,11 +236,18 @@ After running this command, there should be three new files in RUN_DIR: `analysi
   + A tab-sperated txt file containing run metadata for each run in the run list.
   + [example run summary file](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/summary_files/run_summary.txt)
 
+Important Note: Only runs that have completed will be in the summary files. i.e. if you are running 10 runs and 4 have completed, outputs for those 4 runs will be included in the summary files, but not the 6 runs that are still ongoing. **If you run this command multiple times throughout a run new UUIDs will be assigned to each output file in analysis_summary.txt**.
+
+
 ## Examples
 
-Example inputs and commands for **pecgs_TN_wxs_fq_T_rna_fq** and **pecgs_TN_wxs_bam_T_rna_fq** and be found [here](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/ht191) and [here](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/MMRF_1250) respectively.
+Example inputs and commands for **pecgs_TN_wxs_fq**, **pecgs_TN_wxs_bam**, and **pecgs_T_rna_fq** can be found [here](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq_ht191), [here](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam_C3L-00677), and [here](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq_ht191) respectively.
 
-A run directory for the [pecgs_TN_wxs_bam_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/MMRF_1250) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_wxs_bam`.
+A run directory for the [pecgs_TN_wxs_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq_ht191) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_fq`.
+
+A run directory for the [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam_C3L-00677) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_bam`.
+
+A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq_ht191) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_T_rna_fq`.
 
 ## Additional arguments to generate_run_commands.py
 
@@ -258,7 +275,7 @@ optional arguments:
 + --additional-volumes
   + Additional volumnes to map on compute1 on top of /storage1/fs1/dinglab and /scratch1/fs1/dinglab. For example if your input files do not have /storage1/fs1/dinglab and /scratch1/fs1/dinglab in their filepath then you need to include their directory here.
 + --cromwell-port
-  + Port to use for cromwell server. Sometimes when launching the cromwell server there will be an error because the port is already in use. To avoid this issue pick a random port between 8000-15000 to use here and that should solve the issue.
+  + Port to use for cromwell server. By default a random port between 8000-12000 is selected. Sometimes when launching the cromwell server there will be an error because the port is already in use. To avoid this either rerun the make-run command or selected a port with --cromwell-port.
 
 ## Common Issues
 
