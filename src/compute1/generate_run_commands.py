@@ -82,8 +82,12 @@ def tidy_run():
 
 def summarize_run():
     run_list = pd.read_csv(args.run_list, sep='\t', index_col='run_id')
+    # get pecgs-pipeline root
+    fp = os.path.realpath(__file__)
+    tool_root = '/'.join(fp.split('/')[:-3])
+
     analysis_summary, run_summary = pecgs.generate_analysis_summary(
-        run_list, args.run_dir, args.pipeline_name)
+        tool_root, run_list, args.run_dir, args.pipeline_name)
 
     analysis_summary.to_csv(os.path.join(
         args.run_dir, 'analysis_summary.txt'), sep='\t', index=False)
