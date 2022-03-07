@@ -64,12 +64,12 @@ def make_run():
     fp = os.path.realpath(__file__)
     tool_root = '/'.join(fp.split('/')[:-3])
 
-    if args.pipeline_name == 'pecgs_TN_wxs_fq_T_rna_fq':
+    if args.pipeline_name == 'pecgs_TN_wxs_fq':
         start_cmds, server_cmds, job_cmds = pecgs.from_run_list(
             run_map, args.run_dir, tool_root, args.pipeline_name,
             sequencing_info=sequencing_info, proxy_run_dir=args.proxy_run_dir,
             cromwell_port=args.cromwell_port)
-    elif args.pipeline_name == 'pecgs_TN_wxs_bam_T_rna_fq':
+    elif args.pipeline_name in ['pecgs_TN_wxs_bam', 'pecgs_T_rna_fq']:
         start_cmds, server_cmds, job_cmds = pecgs.from_run_list(
             run_map, args.run_dir, tool_root, args.pipeline_name,
             proxy_run_dir=args.proxy_run_dir, cromwell_port=args.cromwell_port)
