@@ -9,10 +9,9 @@ import wombat.pecgs as pecgs
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 
 PIPELINE_IDENTIFIERS = [
-    'pecgs_TN_wxs_fq_T_rna_fq',
-    'pecgs_TN_wxs_bam_T_rna_fq',
-#    'pecgs_TN_wxs_fq',
-#    'pecgs_TN_wxs_bam',
+    'pecgs_TN_wxs_fq',
+    'pecgs_TN_wxs_bam',
+    'pecgs_T_rna_fq',
 ]
 
 parser = argparse.ArgumentParser()

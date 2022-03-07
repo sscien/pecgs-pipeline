@@ -19,3 +19,6 @@
 [submodule "submodules/align-dnaseq"]
 	path = submodules/align-dnaseq
 	url = https://github.com/estorrs/align-dnaseq
+[submodule "submodules/cwl-conditional-steps"]
+	path = submodules/cwl-conditional-steps
+	url = https://github.com/estorrs/cwl-conditional-steps
