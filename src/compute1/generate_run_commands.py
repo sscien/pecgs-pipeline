@@ -89,10 +89,11 @@ def summarize_run():
     analysis_summary, run_summary = pecgs.generate_analysis_summary(
         tool_root, run_list, args.run_dir, args.pipeline_name)
 
-    analysis_summary.to_csv(os.path.join(
-        args.run_dir, 'analysis_summary.txt'), sep='\t', index=False)
-    run_summary.to_csv(os.path.join(
-        args.run_dir, 'run_summary.txt'), sep='\t', index=False)
+    if run_summary is not None:
+        analysis_summary.to_csv(os.path.join(
+            args.run_dir, 'analysis_summary.txt'), sep='\t', index=False)
+        run_summary.to_csv(os.path.join(
+            args.run_dir, 'run_summary.txt'), sep='\t', index=False)
 
 
 def main():
