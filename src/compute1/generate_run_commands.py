@@ -1,6 +1,7 @@
 import argparse
 import os
 import logging
+import random
 
 import pandas as pd
 
@@ -40,8 +41,8 @@ parser.add_argument('--proxy-run-dir', type=str,
 parser.add_argument('--additional-volumes', type=str,
     help='Additional volumnes to map on compute1 on top of /storage1/fs1/dinglab and /scratch1/fs1/dinglab')
 
-parser.add_argument('--cromwell-port', type=int, default=8123,
-    help='Port to use for cromwell server. Usually any value between 8000-15000 will work.')
+parser.add_argument('--cromwell-port', type=int, default=random.randint(8000, 12000),
+    help='Port to use for cromwell server. Usually any value between 8000-15000 will work. Default is to pick a random port between 8000-12000')
 
 
 args = parser.parse_args()
