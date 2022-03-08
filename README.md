@@ -195,8 +195,6 @@ To check on progress you can view log files for each run inside the `logs` direc
 
 You can see currently running jobs with the `bjobs` command.
 
-When all jobs are finished, run steps 2 and 3.
-
 #### Step 2: Deletion of large intermediate files
 
 Cromwell leaves behind a lot of intermediary files that can be quite large. To clean up the workflow directory run the following command from **the first terminal used at the beginning of step 1**.
