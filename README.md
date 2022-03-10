@@ -42,7 +42,7 @@ The following tools are incorporated into the pecgs-pipeline:
 
 There are multiple pipeline variants that are dependent on available input data types. Currently there are only three variants, but more will be available soon.
 
-The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/MMRF_1250/run_list.txt). This is a tab-sperated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
+The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt). This is a tab-sperated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
 
 *Common columns*
 
@@ -66,20 +66,20 @@ The following pipelines are available:
     + Normal WXS fastqs
   + run list columns
     + `run_id`, `case_id`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
-  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_fq_ht191/run_list.txt)
+  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_fq/run_list.txt)
 + **pecgs_TN_wxs_bam**
   + inputs
     + Tumor WXS bam
     + Normal WXS bam
   + run list columns
     + `run_id`, `case_id`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
-  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam_C3L-00677/run_list.txt)
+  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt)
 + **pecgs_T_rna_fq**
   + inputs
     + Tumor RNA-seq fastqs
   + run list columns
     + `run_id`, `case_id`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`
-  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_T_rna_fq_ht191/run_list.txt)
+  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_T_rna_fq/run_list.txt)
 
 #### Outputs
 
@@ -114,6 +114,8 @@ The outputs are the following and seperated by pipeline input data type:
 If you require an intermediate output for any of the tools, they can be extracted from the cromwell working directory of the sample of interest. This run directory is listed in `run_summary.txt`
 
 ## Running the pipeline
+
+Quick Note: Example scripts for all the below steps/commands for each pipeline variant are available [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples)
 
 First, clone the repository with the following command (note that it is different from the usual github clone command).
 
@@ -195,8 +197,6 @@ To check on progress you can view log files for each run inside the `logs` direc
 
 You can see currently running jobs with the `bjobs` command.
 
-When all jobs are finished, run steps 2 and 3.
-
 #### Step 2: Deletion of large intermediate files
 
 Cromwell leaves behind a lot of intermediary files that can be quite large. To clean up the workflow directory run the following command from **the first terminal used at the beginning of step 1**.
@@ -241,13 +241,13 @@ Important Note: Only runs that have completed will be in the summary files. i.e.
 
 ## Examples
 
-Example inputs and commands for **pecgs_TN_wxs_fq**, **pecgs_TN_wxs_bam**, and **pecgs_T_rna_fq** can be found [here](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq_ht191), [here](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam_C3L-00677), and [here](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq_ht191) respectively.
+Example inputs and commands for each pipeline are available at the following links: [pecgs_TN_wxs_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq), [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam), and [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq)
 
-A run directory for the [pecgs_TN_wxs_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq_ht191) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_fq`.
+A run directory for the [pecgs_TN_wxs_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_fq`.
 
-A run directory for the [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam_C3L-00677) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_bam`.
+A run directory for the [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_bam`.
 
-A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq_ht191) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_T_rna_fq`.
+A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_T_rna_fq`.
 
 ## Additional arguments to generate_run_commands.py
 
