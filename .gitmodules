@@ -22,3 +22,6 @@
 [submodule "submodules/cwl-conditional-steps"]
 	path = submodules/cwl-conditional-steps
 	url = https://github.com/estorrs/cwl-conditional-steps
+[submodule "submodules/pecgs-bulk-expression"]
+	path = submodules/pecgs-bulk-expression
+	url = https://github.com/estorrs/pecgs-bulk-expression
