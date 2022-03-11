@@ -27,6 +27,12 @@ inputs:
   type: Directory
 - id: fusion_annotator_dir
   type: Directory
+- id: star_index
+  type: Directory
+- id: gtf
+  type: File
+- id: gene_info
+  type: File
 label: pecgs_T_rna_fq
 outputs:
 - id: filtered_fusions
@@ -35,7 +41,14 @@ outputs:
 - id: total_fusions
   outputSource: run_fusion/total_fusions
   type: File
-requirements: []
+- id: readcounts_and_fpkm_tsv
+  outputSource: run_bulk_expression/readcounts_and_fpkm_tsv
+  type: File
+- id: output_bam
+  outputSource: run_bulk_expression/output_bam
+  type: File
+requirements:
+- class: MultipleInputFeatureRequirement
 steps:
 - id: run_fusion
   in:
@@ -68,3 +81,24 @@ steps:
   - id: filtered_fusions
   - id: total_fusions
   run: ../../submodules/pecgs-fusion/cwl/fusion.cwl
+- id: run_bulk_expression
+  in:
+  - id: cpu
+    source: cpu
+  - id: fq_1
+    source:
+    - tumor_rna_fq_1
+  - id: fq_2
+    source:
+    - tumor_rna_fq_2
+  - id: star_index
+    source: star_index
+  - id: gtf
+    source: gtf
+  - id: gene_info
+    source: gene_info
+  label: run_bulk_expression
+  out:
+  - id: readcounts_and_fpkm_tsv
+  - id: output_bam
+  run: ../../submodules/pecgs-bulk-expression/cwl/bulk_expression.cwl
