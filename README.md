@@ -120,7 +120,7 @@ The outputs are the following and seperated by pipeline input data type:
 + **WGS**
   + Somatic SV
     + somatic_sv_vcf
-    + somatic_sv_evidence_bam
+    + somatic_sv_evidence_bams
 + **RNA-seq**
   + Fusions
     + filtered_fusions
