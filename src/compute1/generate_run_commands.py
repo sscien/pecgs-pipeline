@@ -44,7 +44,7 @@ parser.add_argument('--additional-volumes', type=str,
 parser.add_argument('--cromwell-port', type=int, default=random.randint(8000, 12000),
     help='Port to use for cromwell server. Usually any value between 8000-15000 will work. Default is to pick a random port between 8000-12000')
 
-parser.add_argument('--queue', type=int, default='general',
+parser.add_argument('--queue', type=str, default='general',
     help='Which queue to use. Default is general.')
 
 args = parser.parse_args()
