@@ -25,7 +25,8 @@ The following tools are incorporated into the pecgs-pipeline:
     + original non-cwl fusion pipeline [repo](https://github.com/ding-lab/Fusion_hg38)
 + Bulk RNA-seq expression
   + runs Bobo's bulk RNA-seq expression pipeline
-  + [github_repo](https://github.com/ding-lab/HTAN_bulkRNA_expression)
+  + [github_repo](https://github.com/estorrs/pecgs-bulk-expression)
+    + original non-cwl bulk expression pipeline [repo](https://github.com/ding-lab/HTAN_bulkRNA_expression)
 + Copy number variants (CNV)
   + Runs dinglab cnv pipeline (which is gatk4 based)
   + [github repo](https://github.com/estorrs/pecgs-cnv)
