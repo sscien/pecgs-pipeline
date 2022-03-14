@@ -1,3 +1,9 @@
+bulk_expression_fq_1_list:
+- class: File
+  path: a/file/path
+bulk_expression_fq_2_list:
+- class: File
+  path: a/file/path
 bwts:
   class: Directory
   path: a/file/path
