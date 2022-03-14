@@ -12,6 +12,7 @@ logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
 PIPELINE_IDENTIFIERS = [
     'pecgs_TN_wxs_fq',
     'pecgs_TN_wxs_bam',
+    'pecgs_TN_wgs_bam',
     'pecgs_T_rna_fq',
 ]
 

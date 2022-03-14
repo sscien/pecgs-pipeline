@@ -1,0 +1,10 @@
+generate_evidence_bam: a_bool
+normal_wgs_bam:
+  class: File
+  path: a/file/path
+reference:
+  class: File
+  path: path/to/GRCh38.d1.vd1.fa
+tumor_wgs_bam:
+  class: File
+  path: a/file/path
