@@ -27,6 +27,14 @@ inputs:
   type: Directory
 - id: fusion_annotator_dir
   type: Directory
+- default:
+  - $(inputs.tumor_rna_fq_1)
+  id: bulk_expression_fq_1_list
+  type: File[]
+- default:
+  - $(inputs.tumor_rna_fq_2)
+  id: bulk_expression_fq_2_list
+  type: File[]
 - id: star_index
   type: Directory
 - id: gtf
@@ -49,13 +57,9 @@ steps:
   - id: cpu
     source: cpu
   - id: fq_1
-    linkMerge: merge_nested
-    source:
-    - - tumor_rna_fq_1
+    source: bulk_expression_fq_1_list
   - id: fq_2
-    linkMerge: merge_nested
-    source:
-    - - tumor_rna_fq_2
+    source: bulk_expression_fq_2_list
   - id: star_index
     source: star_index
   - id: gtf
