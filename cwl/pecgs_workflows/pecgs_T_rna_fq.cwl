@@ -49,9 +49,11 @@ steps:
   - id: cpu
     source: cpu
   - id: fq_1
+    linkMerge: merge_nested
     source:
     - tumor_rna_fq_1
   - id: fq_2
+    linkMerge: merge_nested
     source:
     - tumor_rna_fq_2
   - id: star_index
