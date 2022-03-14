@@ -23,17 +23,20 @@ The following tools are incorporated into the pecgs-pipeline:
   + Runs dinglab fusion pipeline
   + [github repo](https://github.com/estorrs/pecgs-fusion)
     + original non-cwl fusion pipeline [repo](https://github.com/ding-lab/Fusion_hg38)
++ Bulk RNA-seq expression
+  + runs Bobo's bulk RNA-seq expression pipeline
+  + [github_repo](https://github.com/ding-lab/HTAN_bulkRNA_expression)
 + Copy number variants (CNV)
   + Runs dinglab cnv pipeline (which is gatk4 based)
   + [github repo](https://github.com/estorrs/pecgs-cnv)
     + original non-cwl cnv pipeline [repo](https://github.com/ding-lab/GATK4SCNA)
 + Microsatellite instability
   + Runs [MSIsensor](https://github.com/ding-lab/msisensor)
++ Structural variants (WGS)
+  + Runs [SomaticSV](https://github.com/ding-lab/SomaticSV)
 + Pathogenic germline variants
   + coming soon
 + Druggability
-  + coming soon
-+ Structural variants
   + coming soon
 + Ancestry
   + coming soon
@@ -74,6 +77,13 @@ The following pipelines are available:
   + run list columns
     + `run_id`, `case_id`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt)
++ **pecgs_TN_wgs_bam**
+  + inputs
+    + Tumor WGS bam
+    + Normal WGS bam
+  + run list columns
+    + `run_id`, `case_id`, `run_uuid`, `wgs_normal_bam.filepath`, `wgs_normal_bam.uuid`, `wgs_tumor_bam.filepath`, `wgs_tumor_bam.uuid`
+  + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wgs_bam/run_list.txt)
 + **pecgs_T_rna_fq**
   + inputs
     + Tumor RNA-seq fastqs
@@ -106,10 +116,17 @@ The outputs are the following and seperated by pipeline input data type:
     + output_dis
     + output_somatic
     + output_germline
++ **WGS**
+  + Somatic SV
+    + somatic_sv_vcf
+    + somatic_sv_evidence_bam
 + **RNA-seq**
   + Fusions
     + filtered_fusions
     + total_fusions
+  + Bulk RNA-seq expression
+    + readcounts_and_fpkm_tsv
+    + output_bam
 
 If you require an intermediate output for any of the tools, they can be extracted from the cromwell working directory of the sample of interest. This run directory is listed in `run_summary.txt`
 
@@ -161,7 +178,7 @@ To generate the run directory, execute the following command. Replace PIPELINE_N
 python generate_run_commands.py make-run PIPELINE_NAME RUN_LIST RUN_DIR
 ```
 
-NOTE: for additinal arguments to generate_run_commands.py see **Additional arguments to generate_run_commands.py** section.
+NOTE: for additinal arguments to generate_run_commands.py see **Additional arguments to generate_run_commands.py** section. Some of these arguments include being able to specify which compute1 queue to use and how to pass in sequencing info for fastq files.
 
 Following execution of this command, a directory should now exist at whatever path was specified for RUN_DIR. Inside that directory you should see three files: `1.start_server.sh`, `2.start_cromwell.sh`, and `3.run_jobs.sh`. There should also be three directories: `inputs`, `logs`, and `runs`.
 
@@ -247,6 +264,8 @@ A run directory for the [pecgs_TN_wxs_fq](https://github.com/ding-lab/pecgs-pipe
 
 A run directory for the [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_bam`.
 
+A run directory for the [pecgs_TN_wgs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wgs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wgs_bam`.
+
 A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_T_rna_fq`.
 
 ## Additional arguments to generate_run_commands.py
@@ -276,6 +295,8 @@ optional arguments:
   + Additional volumnes to map on compute1 on top of /storage1/fs1/dinglab and /scratch1/fs1/dinglab. For example if your input files do not have /storage1/fs1/dinglab and /scratch1/fs1/dinglab in their filepath then you need to include their directory here.
 + --cromwell-port
   + Port to use for cromwell server. By default a random port between 8000-12000 is selected. Sometimes when launching the cromwell server there will be an error because the port is already in use. To avoid this either rerun the make-run command or selected a port with --cromwell-port.
++ --queue
+  + Which queue to run the jobs in on compute1. Default is general.
 
 ## Common Issues
 
