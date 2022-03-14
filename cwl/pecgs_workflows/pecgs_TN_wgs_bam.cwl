@@ -23,7 +23,7 @@ outputs:
   outputSource: run_somatic_sv/output
   type: File
 - id: somatic_sv_evidence_bam
-  outputSource: run_msisensor/output_evidence
+  outputSource: run_somatic_sv/output_evidence
   type:
   - 'null'
   - File
