@@ -25,7 +25,7 @@ outputs:
 - id: somatic_sv_evidence_bam
   outputSource: run_msisensor/output_evidence
   type:
-  - '''null'''
+  - 'null'
   - File
   - items: File
     type: array
