@@ -131,6 +131,9 @@ outputs:
 - id: tinjasmine_output_vcf_all
   outputSource: run_tinjasmine/allCall_VCF
   type: File
+- id: charger_output_tsv
+  outputSource: run_charger/charger_tsv
+  type: File
 requirements: []
 steps:
 - id: run_cnv
@@ -262,3 +265,11 @@ steps:
   - id: allCall_VCF
   - id: clean_MAF
   run: ../../submodules/TinJasmine/cwl/TinJasmine.cwl
+- id: run_charger
+  in:
+  - id: vcf
+    source: run_tinjasmine/clean_VCF
+  label: run_charger
+  out:
+  - id: charger_tsv
+  run: ../charger/charger.cwl
