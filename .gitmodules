@@ -28,3 +28,6 @@
 [submodule "submodules/SomaticSV"]
 	path = submodules/SomaticSV
 	url = https://github.com/ding-lab/SomaticSV
+[submodule "submodules/pecgs-neoscan"]
+	path = submodules/pecgs-neoscan
+	url = https://github.com/estorrs/pecgs-neoscan
