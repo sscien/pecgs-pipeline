@@ -140,6 +140,17 @@ inputs:
   type: File
 - id: gatk_filter_config
   type: File
+- id: neoscan_ref_dir
+  type: Directory
+- id: neoscan_bed
+  type: File
+- id: neoscan_f_allele
+  type: File
+- id: neoscan_netmhc
+  type: File
+- default: dna
+  id: neoscan_input_type
+  type: string?
 label: pecgs_TN_wxs_fq
 outputs:
 - id: tumor_wxs_output_bam
@@ -187,6 +198,12 @@ outputs:
   type: File
 - id: charger_output_tsv
   outputSource: run_charger/charger_tsv
+  type: File
+- id: neoscan_snv_summary
+  outputSource: run_neoscan/snv_summary
+  type: File
+- id: neoscan_indel_summary
+  outputSource: run_neoscan/indel_summary
   type: File
 requirements: []
 steps:
@@ -383,3 +400,24 @@ steps:
   out:
   - id: charger_tsv
   run: ../charger/charger.cwl
+- id: run_neoscan
+  in:
+  - id: maf
+    source: run_tindaisy/output_maf_clean
+  - id: bam
+    source: align_tumor_wxs/output_bam
+  - id: ref_dir
+    source: neoscan_ref_dir
+  - id: bed
+    source: neoscan_bed
+  - id: f_allele
+    source: neoscan_f_allele
+  - id: netmhc
+    source: neoscan_netmhc
+  - id: input_type
+    source: neoscan_input_type
+  label: run_neoscan
+  out:
+  - id: snv_summary
+  - id: indel_summary
+  run: ../../submodules/pecgs-neoscan/cwl/neoscan.cwl

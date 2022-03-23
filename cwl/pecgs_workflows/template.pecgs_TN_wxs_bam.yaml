@@ -38,6 +38,18 @@ microsatellite:
   path: a/file/path
 minimal_homopolymer_size: a_int
 minimal_microsatellite_size: a_int
+neoscan_bed:
+  class: File
+  path: a/file/path
+neoscan_f_allele:
+  class: File
+  path: a/file/path
+neoscan_netmhc:
+  class: File
+  path: a/file/path
+neoscan_ref_dir:
+  class: Directory
+  path: a/dir/path
 normal_barcode: a_string
 normal_wxs_bam:
   class: File
