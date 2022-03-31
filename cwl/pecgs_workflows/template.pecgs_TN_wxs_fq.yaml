@@ -47,12 +47,6 @@ minimal_microsatellite_size: a_int
 neoscan_bed:
   class: File
   path: a/file/path
-neoscan_f_allele:
-  class: File
-  path: a/file/path
-neoscan_netmhc:
-  class: File
-  path: a/file/path
 neoscan_ref_dir:
   class: Directory
   path: a/dir/path

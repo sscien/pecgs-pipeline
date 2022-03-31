@@ -100,10 +100,6 @@ inputs:
   type: Directory
 - id: neoscan_bed
   type: File
-- id: neoscan_f_allele
-  type: File
-- id: neoscan_netmhc
-  type: File
 - default: dna
   id: neoscan_input_type
   type: string?
@@ -300,10 +296,6 @@ steps:
     source: neoscan_ref_dir
   - id: bed
     source: neoscan_bed
-  - id: f_allele
-    source: neoscan_f_allele
-  - id: netmhc
-    source: neoscan_netmhc
   - id: input_type
     source: neoscan_input_type
   label: run_neoscan
