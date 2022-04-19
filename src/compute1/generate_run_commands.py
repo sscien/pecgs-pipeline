@@ -42,9 +42,6 @@ parser.add_argument('--proxy-run-dir', type=str,
 parser.add_argument('--additional-volumes', type=str,
     help='Additional volumnes to map on compute1 on top of /storage1/fs1/dinglab and /scratch1/fs1/dinglab')
 
-parser.add_argument('--cromwell-port', type=int, default=random.randint(8000, 12000),
-    help='Port to use for cromwell server. Usually any value between 8000-15000 will work. Default is to pick a random port between 8000-12000')
-
 parser.add_argument('--queue', type=str, default='general',
     help='Which queue to use. Default is general.')
 
@@ -69,19 +66,18 @@ def make_run():
     tool_root = '/'.join(fp.split('/')[:-3])
 
     if args.pipeline_name == 'pecgs_TN_wxs_fq':
-        start_cmds, server_cmds, job_cmds = pecgs.from_run_list(
+        job_cmds = pecgs.from_run_list(
             run_map, args.run_dir, tool_root, args.pipeline_name,
             sequencing_info=sequencing_info, proxy_run_dir=args.proxy_run_dir,
-            cromwell_port=args.cromwell_port, queue=args.queue)
-    elif args.pipeline_name in ['pecgs_TN_wxs_bam', 'pecgs_TN_wgs_bam', 'pecgs_T_rna_fq']:
-        start_cmds, server_cmds, job_cmds = pecgs.from_run_list(
-            run_map, args.run_dir, tool_root, args.pipeline_name,
-            proxy_run_dir=args.proxy_run_dir, cromwell_port=args.cromwell_port,
             queue=args.queue)
+    elif args.pipeline_name in ['pecgs_TN_wxs_bam', 'pecgs_TN_wgs_bam', 'pecgs_T_rna_fq']:
+        job_cmds = pecgs.from_run_list(
+            run_map, args.run_dir, tool_root, args.pipeline_name,
+            proxy_run_dir=args.proxy_run_dir, queue=args.queue)
 
 
 def tidy_run():
-    pecgs.tidy_run(args.run_dir, os.path.join(args.run_dir, '4.tidy_run.sh'))
+    pecgs.tidy_run(args.run_dir, os.path.join(args.run_dir, '2.tidy_run.sh'))
 
 
 def summarize_run():
