@@ -31,3 +31,6 @@
 [submodule "submodules/pecgs-neoscan"]
 	path = submodules/pecgs-neoscan
 	url = https://github.com/estorrs/pecgs-neoscan
+[submodule "submodules/pecgs-charger"]
+	path = submodules/pecgs-charger
+	url = https://github.com/estorrs/pecgs-charger
