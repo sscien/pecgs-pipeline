@@ -35,6 +35,8 @@ The following tools are incorporated into the pecgs-pipeline:
   + Runs [MSIsensor](https://github.com/ding-lab/msisensor)
 + Structural variants (WGS)
   + Runs [SomaticSV](https://github.com/ding-lab/SomaticSV)
++ Neoantigen discovery
+  + Runs [Neoscan](https://github.com/ding-lab/neoscan/tree/cp1.v1.3)
 + Pathogenic germline variants
   + coming soon
 + Druggability
@@ -117,6 +119,9 @@ The outputs are the following and seperated by pipeline input data type:
     + output_dis
     + output_somatic
     + output_germline
+  + Neoscan
+    + neoscan_snv_summary
+    + neoscan_indel_summary
 + **WGS**
   + Somatic SV
     + somatic_sv_vcf
@@ -152,14 +157,6 @@ Compute1 will only allow a small number of jobs to run at the same time by defau
 bgmod -L N_JOBS /USERNAME/default
 ```
 
-You will also need at least **3** compute1 terminals open. I strongly recommend running from within a TMUX session.
-
-For example:
-
-```bash
-tmux new -s pecgs_pipeline_runs
-```
-
 #### Step 1: Generation of run directory and scripts
 
 The pecgs-pipeline is most easily run on compute1 from an interactive docker session. To launch this session run the following command:
@@ -181,32 +178,16 @@ python generate_run_commands.py make-run PIPELINE_NAME RUN_LIST RUN_DIR
 
 NOTE: for additinal arguments to generate_run_commands.py see **Additional arguments to generate_run_commands.py** section. Some of these arguments include being able to specify which compute1 queue to use and how to pass in sequencing info for fastq files.
 
-Following execution of this command, a directory should now exist at whatever path was specified for RUN_DIR. Inside that directory you should see three files: `1.start_server.sh`, `2.start_cromwell.sh`, and `3.run_jobs.sh`. There should also be three directories: `inputs`, `logs`, and `runs`.
+Following execution of this command, a directory should now exist at whatever path was specified for RUN_DIR. Inside that directory you should see one file: `1.run_jobs.sh`. There should also be three directories: `inputs`, `logs`, and `runs`.
 
 `inputs` holds input configs and files used while running the pipeline. `runs` is the directory where all runs will execute. `logs` will contain the log file for each run in the run list.
 
 To start the run **open a new compute1 terminal** (i.e. not the same terminal running the container that was created in the step above).
 
-Then navigate to RUN_DIR. From inside RUN_DIR run `1.start_server.sh`.
+Then navigate to RUN_DIR. To start the runs, from inside RUN_DIR run `1.run_jobs.sh`.
 
 ```bash
-bash 1.start_server.sh
-```
-
-Then from the running container run `2.start_cromwell.sh`.
-
-```bash
-bash 2.start_cromwell.sh
-```
-
-These two commands will start the cromwell server that is reponsible for coordinating the running of different samples.
-
-After running the above commands, **open another new compute1 terminal** (i.e. not inside the running container).
-
-Now navigate back to RUN_DIR and run 3.run_jobs.sh`.
-
-```bash
-bash 3.run_jobs.sh
+bash 1.run_jobs.sh
 ```
 
 Your pipeline runs should now be running :).
@@ -214,6 +195,31 @@ Your pipeline runs should now be running :).
 To check on progress you can view log files for each run inside the `logs` directory.
 
 You can see currently running jobs with the `bjobs` command.
+
+For a more detailed look at the pipeline, you can get information from the cromwell server that is responsible for running the pipeline.
+
+To look up more detailed information on each workflow, you will need to get the cromwell ID that is assigned to each run. To do so, run the following command from inside RUN_DIR.
+
+```bash
+egrep -H 'cwl \(Unspecified version\) workflow' logs/* | sed 's/^logs\/\(.*\).log:.* workflow \(.*\) .*$/\1, \2/'
+```
+
+The result of this command should give you two fields, the first of which is the `run_id` from the run list, and the second is the cromwell workflow id. The cromwell workflow id is what you can use with the below API calls to get more information on individual workflows.
+
+###### Cromwell server commands
+
+Replace {WORKFLOW_ID} in the below urls with the cromwell workflow id you are interested in.
+
+To get the status of a workflow put the following in your browser `http://mammoth.wusm.wustl.edu:8000/api/workflows/v1/{WORKFLOW_ID}/status`
+
+To get the outputs of a workflow put the following in your browser `http://mammoth.wusm.wustl.edu:8000/api/workflows/v1/{WORKFLOW_ID}/outputs`
+
+To get a timing diagram for a workflow put the following in your browser `http://mammoth.wusm.wustl.edu:8000/api/workflows/v1/{WORKFLOW_ID}/timing`
+
+To see metadata for a workflow put the following in your browser `http://mammoth.wusm.wustl.edu:8000/api/workflows/v1/{WORKFLOW_ID}/metadata?expandSubWorkflows=false`
+
+You can also see additional GET endpoints at `http://mammoth.wusm.wustl.edu:8000`
+
 
 #### Step 2: Deletion of large intermediate files
 
@@ -223,16 +229,16 @@ Cromwell leaves behind a lot of intermediary files that can be quite large. To c
 python generate_run_commands.py tidy-run PIPELINE_NAME RUN_LIST RUN_DIR
 ```
 
-There should now be a file called `4.tidy_run.sh` in RUN_DIR.
+There should now be a file called `2.tidy_run.sh` in RUN_DIR.
 
-This file will contain commands to remove all **finished and successfully completed** pipeline runs. If you have multiple runs in your run_list then only runs that finished and completed successfully will have files to be deleted inside `4.tidy_run.sh`.
+This file will contain commands to remove all **finished and successfully completed** pipeline runs. If you have multiple runs in your run_list then only runs that finished and completed successfully will have files to be deleted inside `2.tidy_run.sh`.
 
 If you are performing a large number of runs it is usually a good idea to periodically run the above command to clean out intermediarry files, otherwise they may fill up memory in whatever directory you are using to execute your runs.
 
-To run `4.tidy_run.sh`, in a compute1 terminal not inside a running container run this script to delete large intermediary files.
+To run `2.tidy_run.sh`, in a compute1 terminal not inside a running container run this script to delete large intermediary files.
 
 ```bash
-bash 4.tidy_run.sh
+bash 2.tidy_run.sh
 ```
 
 #### Step 3: Generation of analysis summary and run summary files
@@ -294,8 +300,6 @@ optional arguments:
   + Use if running this script on a system that is not compute1. Will write inputs to a proxy directory that can then be copied to compute1.
 + --additional-volumes
   + Additional volumnes to map on compute1 on top of /storage1/fs1/dinglab and /scratch1/fs1/dinglab. For example if your input files do not have /storage1/fs1/dinglab and /scratch1/fs1/dinglab in their filepath then you need to include their directory here.
-+ --cromwell-port
-  + Port to use for cromwell server. By default a random port between 8000-12000 is selected. Sometimes when launching the cromwell server there will be an error because the port is already in use. To avoid this either rerun the make-run command or selected a port with --cromwell-port.
 + --queue
   + Which queue to run the jobs in on compute1. Default is general.
 
