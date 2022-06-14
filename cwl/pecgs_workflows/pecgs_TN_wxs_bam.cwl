@@ -103,6 +103,16 @@ inputs:
 - default: dna
   id: neoscan_input_type
   type: string?
+- id: charger_inheritance_gene_list
+  type: File
+- id: charger_pp2_gene_list
+  type: File
+- id: charger_pathogenic_variants
+  type: File
+- id: charger_hotspot3d_clusters
+  type: File
+- id: charger_clinvar_alleles
+  type: File
 label: pecgs_TN_wxs_bam
 outputs:
 - id: gene_level_cnv
@@ -146,6 +156,12 @@ outputs:
   type: File
 - id: neoscan_indel_summary
   outputSource: run_neoscan/indel_summary
+  type: File
+- id: charger_filtered_tsv
+  outputSource: run_charger/filtered_tsv
+  type: File
+- id: charger_rare_threshold_filtered_tsv
+  outputSource: run_charger/rare_threshold_filtered_tsv
   type: File
 requirements: []
 steps:
@@ -278,14 +294,6 @@ steps:
   - id: allCall_VCF
   - id: clean_MAF
   run: ../../submodules/TinJasmine/cwl/TinJasmine.cwl
-- id: run_charger
-  in:
-  - id: vcf
-    source: run_tinjasmine/clean_VCF
-  label: run_charger
-  out:
-  - id: charger_tsv
-  run: ../charger/charger.cwl
 - id: run_neoscan
   in:
   - id: maf
@@ -303,3 +311,24 @@ steps:
   - id: snv_summary
   - id: indel_summary
   run: ../../submodules/pecgs-neoscan/cwl/neoscan.cwl
+- id: run_charger
+  in:
+  - id: vcf
+    source: run_tinjasmine/clean_VCF
+  - id: inheritance_gene_list
+    source: charger_inheritance_gene_list
+  - id: pp2_gene_list
+    source: charger_pp2_gene_list
+  - id: pathogenic_variants
+    source: charger_pathogenic_variants
+  - id: hotspot3d_clusters
+    source: charger_hotspot3d_clusters
+  - id: clinvar_alleles
+    source: charger_clinvar_alleles
+  - id: sample
+    source: sample
+  label: run_charger
+  out:
+  - id: filtered_tsv
+  - id: rare_threshold_filtered_tsv
+  run: ../../submodules/pecgs-charger/cwl/charger.cwl

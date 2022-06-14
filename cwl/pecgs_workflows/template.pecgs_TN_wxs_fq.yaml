@@ -20,6 +20,21 @@ centromere:
 centromere_bed:
   class: File
   path: a/file/path
+charger_clinvar_alleles:
+  class: File
+  path: a/file/path
+charger_hotspot3d_clusters:
+  class: File
+  path: a/file/path
+charger_inheritance_gene_list:
+  class: File
+  path: a/file/path
+charger_pathogenic_variants:
+  class: File
+  path: a/file/path
+charger_pp2_gene_list:
+  class: File
+  path: a/file/path
 classification_config:
   class: File
   path: a/file/path
