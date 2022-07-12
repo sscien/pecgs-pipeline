@@ -148,9 +148,6 @@ outputs:
 - id: tinjasmine_output_vcf_all
   outputSource: run_tinjasmine/allCall_VCF
   type: File
-- id: charger_output_tsv
-  outputSource: run_charger/charger_tsv
-  type: File
 - id: neoscan_snv_summary
   outputSource: run_neoscan/snv_summary
   type: File
