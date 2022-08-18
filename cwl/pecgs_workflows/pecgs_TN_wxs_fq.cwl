@@ -89,9 +89,9 @@ inputs:
 - default: false
   id: rescue_cosmic
   type: boolean?
-- id: vep_cache_version
+- id: tindaisy_vep_cache_version
   type: string
-- id: vep_cache_gz
+- id: tindaisy_vep_cache_gz
   type: File
 - id: clinvar_annotation
   type: File
@@ -132,13 +132,9 @@ inputs:
   type: File
 - id: ROI_BED
   type: File
-- id: varscan_filter_config
-  type: File
-- id: pindel_filter_config
-  type: File
 - id: pindel_config_template
   type: File
-- id: gatk_filter_config
+- id: tinjasmine_vep_cache_gz
   type: File
 - id: neoscan_ref_dir
   type: Directory
@@ -200,7 +196,7 @@ outputs:
   outputSource: run_tinjasmine/clean_VCF
   type: File
 - id: tinjasmine_output_vcf_all
-  outputSource: run_tinjasmine/allCall_VCF
+  outputSource: run_tinjasmine/all_call_vcf
   type: File
 - id: neoscan_snv_summary
   outputSource: run_neoscan/snv_summary
@@ -352,9 +348,9 @@ steps:
   - id: clinvar_annotation
     source: clinvar_annotation
   - id: vep_cache_gz
-    source: vep_cache_gz
+    source: tindaisy_vep_cache_gz
   - id: vep_cache_version
-    source: vep_cache_version
+    source: tindaisy_vep_cache_version
   - id: rescue_cosmic
     source: rescue_cosmic
   - id: rescue_clinvar
@@ -373,20 +369,12 @@ steps:
     source: align_normal_wxs/output_bam
   - id: reference
     source: reference
-  - id: gatk_filter_config
-    source: gatk_filter_config
   - id: pindel_config_template
     source: pindel_config_template
-  - id: pindel_filter_config
-    source: pindel_filter_config
-  - id: varscan_filter_config
-    source: varscan_filter_config
   - id: ROI_BED
     source: ROI_BED
   - id: vep_cache_gz
-    source: vep_cache_gz
-  - id: vep_cache_version
-    source: vep_cache_version
+    source: tinjasmine_vep_cache_gz
   - id: assembly
     source: assembly
   - id: Canonical_BED
@@ -398,9 +386,9 @@ steps:
   label: run_tinjasmine
   out:
   - id: clean_VCF
-  - id: allCall_VCF
+  - id: all_call_vcf
   - id: clean_MAF
-  run: ../../submodules/TinJasmine/cwl/TinJasmine.cwl
+  run: ../../submodules/TinJasmine/cwl/TinJasmine.v1.2.vep-100.cwl
 - id: run_neoscan
   in:
   - id: maf

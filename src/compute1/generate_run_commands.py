@@ -2,6 +2,7 @@ import argparse
 import os
 import logging
 import random
+from pathlib import Path
 
 import pandas as pd
 
@@ -18,8 +19,8 @@ PIPELINE_IDENTIFIERS = [
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('mode', type=str, choices=['make-run', 'tidy-run', 'summarize-run'],
-    help='Which command to execute. make-run will generate scripts needed to run pipeline. tidy-run will clean up large, uneccessary input files. summarize-run will create summary files with run metadata.')
+parser.add_argument('mode', type=str, choices=['make-run', 'tidy-run', 'summarize-run', 'move-run'],
+    help='Which command to execute. make-run will generate scripts needed to run pipeline. tidy-run will clean up large, uneccessary input files. summarize-run will create summary files with run metadata. move-run will transfer the results of the run to another directory and update filepaths in all summary/results files accordingly.')
 
 parser.add_argument('pipeline_name', type=str, choices=PIPELINE_IDENTIFIERS,
     help='Which pipeline version to run.')
@@ -44,6 +45,9 @@ parser.add_argument('--additional-volumes', type=str,
 
 parser.add_argument('--queue', type=str, default='general',
     help='Which queue to use. Default is general.')
+
+parser.add_argument('--target-dir', type=str,
+    help='Which directory to move the run directory to after run is complete. Used in move-run')
 
 args = parser.parse_args()
 
@@ -95,6 +99,35 @@ def summarize_run():
         run_summary.to_csv(os.path.join(
             args.run_dir, 'run_summary.txt'), sep='\t', index=False)
 
+def alter_dataframe_filepaths(df, run_dir, target_dir):
+    for i in df.index.to_list():
+        for c in df.columns:
+            fp = df.loc[i, c]
+            if run_dir in fp:
+                df.loc[i, c] = os.path.join(
+                    target_dir, '/'.join(fp.replace(run_dir, '')))
+    return df
+
+
+def move_run():
+    Path(target_dir).mkdir(parents=True, exist_ok=True)
+
+    run_summary = pd.read_csv(
+        os.path.join(args.run_dir, 'run_summary.txt'), sep='\t')
+    analysis_summary = pd.read_csv(
+        os.path.join(args.run_dir, 'analysis_summary.txt'), sep='\t')
+
+    run_summary = alter_dataframe_filepaths(
+        run_summary, args.run_dir, args.target_dir)
+    analysis_summary = alter_dataframe_filepaths(
+        analysis_summary, args.run_dir, args.target_dir)
+
+    analysis_summary.to_csv(os.path.join(
+        args.target_dir, 'analysis_summary.txt'), sep='\t', index=False)
+    run_summary.to_csv(os.path.join(
+        args.target_dir, 'run_summary.txt'), sep='\t', index=False)
+
+
 
 def main():
     if args.mode == 'make-run':
@@ -103,6 +136,8 @@ def main():
         tidy_run()
     elif args.mode == 'summarize-run':
         summarize_run()
+    elif args.mode == 'move-run':
+        move_run()
 
 
 if __name__ == '__main__':
