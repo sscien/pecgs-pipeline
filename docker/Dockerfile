@@ -17,6 +17,8 @@ ENV PATH="/miniconda/envs/pecgs/bin:$PATH"
 # random string to force rebuild from here
 RUN echo 'zaozagz'
 
-RUN pip install git+https://github.com/estorrs/wombat
+# pip install -e git://github.com/{ username }/{ reponame }.git@{ tag name }#egg={ desired egg name }
+
+RUN pip install git+https://github.com/estorrs/wombat.git@bbaf8c82cfb829e24d2d8eb14f407ef03d9e4ce5
 
 CMD /bin/bash
