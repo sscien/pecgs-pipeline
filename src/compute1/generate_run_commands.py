@@ -135,7 +135,7 @@ def move_run():
     if args.no_copy:
         shutil.move(args.run_dir, args.target_dir)
     else:
-        shutil.copytree(args.run_dir, args.target_dir)
+        shutil.copytree(args.run_dir, args.target_dir, dirs_exist_ok=True)
 
 
 def main():
