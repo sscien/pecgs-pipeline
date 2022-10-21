@@ -49,7 +49,7 @@ parser.add_argument('--queue', type=str, default='general',
 parser.add_argument('--target-dir', type=str,
     help='Which directory to move the run directory to after run is complete. Used in move-run')
 
-parser.add_argument('--no-copy', type=bool, action='store_true',
+parser.add_argument('--no-copy', action='store_true',
     help='Whether to move or copy run from original location. Run is copied when moved by default. Used in move-run')
 
 args = parser.parse_args()
