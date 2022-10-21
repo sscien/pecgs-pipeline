@@ -100,6 +100,7 @@ def summarize_run():
             args.run_dir, 'run_summary.txt'), sep='\t', index=False)
 
 def alter_dataframe_filepaths(df, run_dir, target_dir):
+    print(target_dir)
     for i in df.index.to_list():
         for c in df.columns:
             fp = df.loc[i, c]
