@@ -49,6 +49,9 @@ parser.add_argument('--queue', type=str, default='general',
 parser.add_argument('--target-dir', type=str,
     help='Which directory to move the run directory to after run is complete. Used in move-run')
 
+parser.add_argument('--no-copy', type=bool, action='store_true',
+    help='Whether to move or copy run from original location. Run is copied when moved by default. Used in move-run')
+
 args = parser.parse_args()
 
 
@@ -104,9 +107,8 @@ def alter_dataframe_filepaths(df, run_dir, target_dir):
         for c in df.columns:
             fp = df.loc[i, c]
             if isinstance(fp, str) and run_dir in fp:
-                print('run and target', run_dir, target_dir)
                 new_fp = fp.replace(run_dir, '')
-                new_fp = os.path.join(target_dir, new_fp.strip('/'))
+                new_fp = os.path.join(target_dir, run_dir.split('/')[-1], new_fp.strip('/'))
                 df.loc[i, c] = new_fp
     return df
 
@@ -129,6 +131,10 @@ def move_run():
     run_summary.to_csv(os.path.join(
         args.target_dir, 'run_summary.txt'), sep='\t', index=False)
 
+    if args.no_copy:
+        shutil.move(args.run_dir, args.target_dir)
+    else:
+        shutil.copytree(args.run_dir, args.target_dir)
 
 
 def main():
