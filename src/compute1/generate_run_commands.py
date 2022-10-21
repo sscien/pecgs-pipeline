@@ -105,8 +105,12 @@ def alter_dataframe_filepaths(df, run_dir, target_dir):
         for c in df.columns:
             fp = df.loc[i, c]
             if isinstance(fp, str) and run_dir in fp:
+                print(run_dir, target_dir)
                 new_fp = fp.replace(run_dir, '')
-                df.loc[i, c] = os.path.join(target_dir, new_fp)
+                print(new_fp)
+                new_fp = os.path.join(target_dir, new_fp)
+                print(new_fp)
+                df.loc[i, c] = new_fp
     return df
 
 
