@@ -110,7 +110,7 @@ def alter_dataframe_filepaths(df, run_dir, target_dir):
 
 
 def move_run():
-    Path(target_dir).mkdir(parents=True, exist_ok=True)
+    Path(args.target_dir).mkdir(parents=True, exist_ok=True)
 
     run_summary = pd.read_csv(
         os.path.join(args.run_dir, 'run_summary.txt'), sep='\t')
