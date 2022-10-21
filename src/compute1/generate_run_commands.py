@@ -136,7 +136,7 @@ def move_run():
     if args.no_copy:
         shutil.move(args.run_dir, args.target_dir)
     else:
-        subprocess.check_output(f'cp -R {args.run_dir} {args.target_dir}')
+        subprocess.check_output(f'cp -R {args.run_dir} {args.target_dir}', shell=True)
 
 
 def main():
