@@ -4,6 +4,9 @@ id: pecgs_TN_wxs_bam
 inputs:
 - id: sample
   type: string
+- default: ''
+  id: disease
+  type: string?
 - default: 40
   id: cpu
   type: int?
@@ -100,9 +103,6 @@ inputs:
   type: File
 - id: charger_clinvar_alleles
   type: File
-- default: ''
-  id: annotate_trials_keyword
-  type: string?
 label: pecgs_TN_wxs_bam
 outputs:
 - id: gene_level_cnv
@@ -322,7 +322,7 @@ steps:
   - id: variant_filepath
     source: run_tindaisy/output_maf_clean
   - id: annotate_trials_keyword
-    source: annotate_trials_keyword
+    source: disease
   - id: tumor_sample_name
     valueFrom: $(inputs.sample).T
   - id: normal_sample_name

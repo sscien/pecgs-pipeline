@@ -59,10 +59,12 @@ args = parser.parse_args()
 
 def make_run():
     run_list = pd.read_csv(args.run_list, sep='\t', index_col='run_id')
-    run_map = run_list.transpose().to_dict()
+    d = run_list.transpose().to_dict()
     run_map = {k: {c.replace('.filepath', ''): val
                    for c, val in v.items() if 'filepath' in c}
-               for k, v in run_map.items()}
+               for k, v in d.items()}
+    for k, v in run_map.items():
+        v['disease'] = d[k]['disease']
 
     if args.sequencing_info is not None:
         sequencing_info = pd.read_csv(

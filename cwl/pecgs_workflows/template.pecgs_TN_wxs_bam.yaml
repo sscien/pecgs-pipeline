@@ -7,7 +7,6 @@ ROI_BED:
 af_config:
   class: File
   path: a/file/path
-annotate_trials_keyword: a_string
 assembly: a_string
 call_regions:
   class: File
@@ -46,6 +45,7 @@ common_biallelic:
   class: File
   path: a/file/path
 cpu: a_int
+disease: a_string
 microsatellite:
   class: File
   path: a/file/path
