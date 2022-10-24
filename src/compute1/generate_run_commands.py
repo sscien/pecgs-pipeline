@@ -65,6 +65,7 @@ def make_run():
                for k, v in d.items()}
     for k, v in run_map.items():
         v['disease'] = d[k]['disease']
+        v['case_id'] = d[k]['case_id']
 
     if args.sequencing_info is not None:
         sequencing_info = pd.read_csv(
