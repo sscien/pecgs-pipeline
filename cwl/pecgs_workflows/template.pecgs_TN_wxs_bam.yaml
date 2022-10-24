@@ -7,6 +7,7 @@ ROI_BED:
 af_config:
   class: File
   path: a/file/path
+annotate_trials_keyword: a_string
 assembly: a_string
 call_regions:
   class: File
