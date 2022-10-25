@@ -224,9 +224,11 @@ steps:
   - id: chrlist
     source: tindaisy_chrlist
   - id: tumor_barcode
-    valueFrom: $(sample).T
+    source: sample
+    valueFrom: $(self).T
   - id: normal_barcode
-    valueFrom: $(sample).N
+    source: sample
+    valueFrom: $(self).N
   - id: canonical_BED
     source: canonical_BED
   - id: call_regions
@@ -324,9 +326,11 @@ steps:
   - id: annotate_trials_keyword
     source: disease
   - id: tumor_sample_name
-    valueFrom: $(sample).T
+    source: sample
+    valueFrom: $(self).T
   - id: normal_sample_name
-    valueFrom: $(sample).N
+    source: sample
+    valueFrom: $(self).N
   label: run_druggability
   out:
   - id: output
