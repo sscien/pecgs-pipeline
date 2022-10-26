@@ -45,6 +45,7 @@ common_biallelic:
   class: File
   path: a/file/path
 cpu: a_int
+disease: a_string
 known_sites:
   class: File
   path: path/to/vcf.gz

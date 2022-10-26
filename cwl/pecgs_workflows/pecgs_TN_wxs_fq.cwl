@@ -4,6 +4,9 @@ id: pecgs_TN_wxs_fq
 inputs:
 - id: sample
   type: string
+- default: ''
+  id: disease
+  type: string?
 - default: 40
   id: cpu
   type: int?
@@ -393,7 +396,7 @@ steps:
   - id: maf
     source: run_tindaisy/output_maf_clean
   - id: bam
-    source: tumor_wxs_bam
+    source: align_tumor_wxs/output_bam
   - id: ref_dir
     source: neoscan_ref_dir
   - id: bed
