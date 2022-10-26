@@ -103,12 +103,6 @@ inputs:
   type: File
 - id: canonical_BED
   type: File
-- default: $(inputs.sample).N
-  id: normal_barcode
-  type: string?
-- default: $(inputs.sample).T
-  id: tumor_barcode
-  type: string?
 - id: tindaisy_chrlist
   type: File
 - id: strelka_config
@@ -121,9 +115,6 @@ inputs:
   type: File
 - id: pindel_config
   type: File
-- default: $(inputs.sample)
-  id: sample_barcode
-  type: string?
 - id: centromere
   type: File
 - id: tinjasmine_chrlist
@@ -209,6 +200,12 @@ outputs:
   type: File
 - id: charger_rare_threshold_filtered_tsv
   outputSource: run_charger/rare_threshold_filtered_tsv
+  type: File
+- id: druggability_output
+  outputSource: run_druggability/output
+  type: File
+- id: druggability_aux_trials_output
+  outputSource: run_druggability/aux_trials_output
   type: File
 requirements: []
 steps:
@@ -334,9 +331,11 @@ steps:
   - id: chrlist
     source: tindaisy_chrlist
   - id: tumor_barcode
-    source: tumor_barcode
+    source: sample
+    valueFrom: $(self).T
   - id: normal_barcode
-    source: normal_barcode
+    source: sample
+    valueFrom: $(self).N
   - id: canonical_BED
     source: canonical_BED
   - id: call_regions
@@ -364,7 +363,7 @@ steps:
 - id: run_tinjasmine
   in:
   - id: sample_barcode
-    source: normal_barcode
+    source: sample
   - id: bam
     source: align_normal_wxs/output_bam
   - id: reference
@@ -394,7 +393,7 @@ steps:
   - id: maf
     source: run_tindaisy/output_maf_clean
   - id: bam
-    source: align_tumor_wxs/output_bam
+    source: tumor_wxs_bam
   - id: ref_dir
     source: neoscan_ref_dir
   - id: bed
@@ -427,3 +426,20 @@ steps:
   - id: filtered_tsv
   - id: rare_threshold_filtered_tsv
   run: ../../submodules/pecgs-charger/cwl/charger.cwl
+- id: run_druggability
+  in:
+  - id: variant_filepath
+    source: run_tindaisy/output_maf_clean
+  - id: annotate_trials_keyword
+    source: disease
+  - id: tumor_sample_name
+    source: sample
+    valueFrom: $(self).T
+  - id: normal_sample_name
+    source: sample
+    valueFrom: $(self).N
+  label: run_druggability
+  out:
+  - id: output
+  - id: aux_trials_output
+  run: ../../submodules/pecgs-druggability/cwl/druggability.cwl
