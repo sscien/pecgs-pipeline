@@ -34,3 +34,6 @@
 [submodule "submodules/pecgs-charger"]
 	path = submodules/pecgs-charger
 	url = https://github.com/estorrs/pecgs-charger
+[submodule "submodules/pecgs-druggability"]
+	path = submodules/pecgs-druggability
+	url = https://github.com/estorrs/pecgs-druggability

@@ -2,6 +2,8 @@ import argparse
 import os
 import logging
 import random
+import shutil
+import subprocess
 from pathlib import Path
 
 import pandas as pd
@@ -49,15 +51,21 @@ parser.add_argument('--queue', type=str, default='general',
 parser.add_argument('--target-dir', type=str,
     help='Which directory to move the run directory to after run is complete. Used in move-run')
 
+parser.add_argument('--no-copy', action='store_true',
+    help='Whether to move or copy run from original location. Run is copied when moved by default. Used in move-run')
+
 args = parser.parse_args()
 
 
 def make_run():
     run_list = pd.read_csv(args.run_list, sep='\t', index_col='run_id')
-    run_map = run_list.transpose().to_dict()
+    d = run_list.transpose().to_dict()
     run_map = {k: {c.replace('.filepath', ''): val
                    for c, val in v.items() if 'filepath' in c}
-               for k, v in run_map.items()}
+               for k, v in d.items()}
+    for k, v in run_map.items():
+        v['disease'] = d[k]['disease']
+        v['case_id'] = d[k]['case_id']
 
     if args.sequencing_info is not None:
         sequencing_info = pd.read_csv(
@@ -103,14 +111,15 @@ def alter_dataframe_filepaths(df, run_dir, target_dir):
     for i in df.index.to_list():
         for c in df.columns:
             fp = df.loc[i, c]
-            if run_dir in fp:
-                df.loc[i, c] = os.path.join(
-                    target_dir, '/'.join(fp.replace(run_dir, '')))
+            if isinstance(fp, str) and run_dir in fp:
+                new_fp = fp.replace(run_dir, '')
+                new_fp = os.path.join(target_dir, run_dir.split('/')[-1], new_fp.strip('/'))
+                df.loc[i, c] = new_fp
     return df
 
 
 def move_run():
-    Path(target_dir).mkdir(parents=True, exist_ok=True)
+    Path(args.target_dir).mkdir(parents=True, exist_ok=True)
 
     run_summary = pd.read_csv(
         os.path.join(args.run_dir, 'run_summary.txt'), sep='\t')
@@ -127,6 +136,10 @@ def move_run():
     run_summary.to_csv(os.path.join(
         args.target_dir, 'run_summary.txt'), sep='\t', index=False)
 
+    if args.no_copy:
+        shutil.move(args.run_dir, args.target_dir)
+    else:
+        subprocess.check_output(f'cp -R {args.run_dir} {args.target_dir}', shell=True)
 
 
 def main():

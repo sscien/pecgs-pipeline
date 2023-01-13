@@ -38,15 +38,15 @@ The following tools are incorporated into the pecgs-pipeline:
 + Neoantigen discovery
   + Runs [Neoscan](https://github.com/ding-lab/neoscan/tree/cp1.v1.3)
 + Pathogenic germline variants
-  + coming soon
+  + Runs [Charger](https://github.com/estorrs/pecgs-charger)
+    + original non-cwl charger V0.5.4 [repo](https://github.com/ding-lab/CharGer/tree/7d7d2911b89261fa5dceea6395a5d188a82757f2)
 + Druggability
-  + coming soon
-+ Ancestry
-  + coming soon
+  + Runs [Druggability pipeline](https://github.com/estorrs/pecgs-druggability)
+    + original non-cwl druggability pipeline [repo](https://github.com/ding-lab/druggability)
 
 #### Inputs
 
-There are multiple pipeline variants that are dependent on available input data types. Currently there are only three variants, but more will be available soon.
+There are multiple pipeline variants that are dependent on available input data types. Currently there are only three variants, though more may be available in the future.
 
 The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt). This is a tab-sperated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
 
@@ -61,7 +61,12 @@ The inputs to the pipeline are specified in a **run list** file. See an example 
 
 *Input dependent columns*
 
-These columns will change depending on which pipeline variant is being used and are listed below. Each input data type will have two columns in the run list: one specifying the filepath, and another specifying the [universally unique identifier (UUID)](https://en.wikipedia.org/wiki/Universally_unique_identifier) of the file. The file uuid is for tracking purposes, so if you don't care too much about that you can just use integers or make up a random string here. For PE-CGS runs please use the uuid for the file that is in the bammap.
+These columns will change depending on which pipeline variant is being used and are listed for each pipeline in the section below.
+
++ disease
+  + used in WXS pipelines. Specifies the cancer type of a given case. Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
+
+For file and directory path inputs, there will be two columns in the run list: one specifying the filepath, and another specifying the [universally unique identifier (UUID)](https://en.wikipedia.org/wiki/Universally_unique_identifier) of the file. The file uuid is for tracking purposes, so if you don't care too much about that you can just use integers or make up a random string here. For PE-CGS runs please use the uuid for the file that is in the bammap.
 
 
 The following pipelines are available:
@@ -71,14 +76,14 @@ The following pipelines are available:
     + Tumor WXS fastqs
     + Normal WXS fastqs
   + run list columns
-    + `run_id`, `case_id`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
+    + `run_id`, `case_id`, `disease`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_fq/run_list.txt)
 + **pecgs_TN_wxs_bam**
   + inputs
     + Tumor WXS bam
     + Normal WXS bam
   + run list columns
-    + `run_id`, `case_id`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
+    + `run_id`, `case_id`, `disease`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt)
 + **pecgs_TN_wgs_bam**
   + inputs
@@ -105,23 +110,29 @@ The outputs are the following and seperated by pipeline input data type:
     + aligned, sorted, and indexed wxs tumor bam
     + aligned, sorted, and indexed wxs normal bam
   + Somatic variant calling
-    + output_vcf_all
-    + output_vcf_clean
-    + output_maf_clean
+    + tindaisy_output_vcf_all
+    + tindaisy_output_vcf_clean
+    + tindaisy_output_maf_clean
   + Germline variant calling
-    + output_vcf_all
-    + output_vcf_clean
-    + output_maf_clean
+    + tinjasmine_output_vcf_all
+    + tinjasmine_output_vcf_clean
+    + tinjasmine_output_maf_clean
   + CNV
     + gene_level_cnv
   + Microsatellite instability
-    + output_summary
-    + output_dis
-    + output_somatic
-    + output_germline
-  + Neoscan
+    + msisensor_output_summary
+    + msisensor_output_dis
+    + msisensor_output_somatic
+    + msisensor_output_germline
+  + Pathogenic variants
+    + charger_filtered_tsv
+    + charger_rare_threshold_filtered_tsv
+  + Neoantigen discovery
     + neoscan_snv_summary
     + neoscan_indel_summary
+  + Druggability
+    + druggability_output
+    + druggability_aux_trials_output
 + **WGS**
   + Somatic SV
     + somatic_sv_vcf
@@ -149,9 +160,9 @@ git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
 cd pecgs-pipeline/src/compute1
 ```
 
-There are three main steps to running the pecgs pipelines: 1) generation of run directory/scripts required to run the pipeline, 2) removal of large unnecessary intermediate files generated during pipeline run, and 3) generation of pipeline run summary files.
+There are four main steps to running the pecgs pipelines: 1) generation of run directory/scripts required to run the pipeline, 2) removal of large unnecessary intermediate files generated during pipeline run, 3) generation of pipeline run summary files, and 4) moving/copying pipeline run to another location (optional).
 
-Compute1 will only allow a small number of jobs to run at the same time by default. To allow for more jobs to run in parallel you will need to adjust the number of jobs that can be run by the default job group. To do this run the below command (replace USERNAME with your compute1 username and N_JOBS with how many jobs you would like to run in parallel). A value of N_JOBS around ~25 is usually good (this number is NOT how many samples will be run in parallel, but how many pipeline steps accross samples will be run in parallel. You may want to increase or decrease this number depending on how many samples you want to run in parallel.
+Compute1 will only allow a small number of jobs to run at the same time by default. To allow for more jobs to run in parallel you will need to adjust the number of jobs that can be run by the default job group. To do this run the below command (replace USERNAME with your compute1 username and N_JOBS with how many jobs you would like to run in parallel). A value of N_JOBS around ~50 is usually good (this number is NOT how many samples will be run in parallel, but how many pipeline steps accross samples will be run in parallel. You may want to increase or decrease this number depending on how many samples you want to run in parallel.
 
 ```bash
 bgmod -L N_JOBS /USERNAME/default
@@ -262,27 +273,38 @@ After running this command, there should be three new files in RUN_DIR (assuming
 
 Important Note: Only runs that have completed will be in the summary files. i.e. if you are running 10 runs and 4 have completed, outputs for those 4 runs will be included in the summary files, but not the 6 runs that are still ongoing. **If you run this command multiple times throughout a run new UUIDs will be assigned to each output file in analysis_summary.txt**.
 
+#### Step 4: Copy/move analysis summary and run summary files (optional)
+
+This step allows for the copying/moving of runs to a new location, along with automatic regeneration of analysis and run summary files so filepaths remain correct. This step is useful if you are running in the `/scratch1` on compute1 since all files in that directory are automatically deleted by RIS after 30 days.
+
+```bash
+python generate_run_commands.py move-run pecgs_TN_wxs_bam run_list.txt RUN_DIR --target-dir TARGET_DIR
+```
+
+After running this command, the RUN_DIR should now be moved inside TARGET_DIR, along with regenerated `run_summary.txt` and `analysis_summary.txt`.
+
+The default behavior is to copy RUN_DIR, but if you want to move it, you can include the `--no-copy` flag. I would recommend against this, as it's generally safer in this situation to copy and then manually go back and remove the original directory.
 
 ## Examples
 
 Example inputs and commands for each pipeline are available at the following links: [pecgs_TN_wxs_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq), [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam), and [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq)
 
-A run directory for the [pecgs_TN_wxs_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_fq`.
+A run directory for the [pecgs_TN_wxs_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/storage1/fs1/dinglab/Active/Projects/estorrs/wombat/tests/data/pecgs_TN_wxs_fq/run`.
 
-A run directory for the [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wxs_bam`.
+A run directory for the [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wxs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/storage1/fs1/dinglab/Active/Projects/estorrs/wombat/tests/data/pecgs_TN_wxs_bam/run`.
 
-A run directory for the [pecgs_TN_wgs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wgs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_TN_wgs_bam`.
+A run directory for the [pecgs_TN_wgs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wgs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at ``.
 
-A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/scratch1/fs1/dinglab/estorrs/cromwell-data/pecgs/testing/pecgs_T_rna_fq`.
+A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/storage1/fs1/dinglab/Active/Projects/estorrs/wombat/tests/data/pecgs_T_rna_fq/run`.
 
 ## Additional arguments to generate_run_commands.py
 
 usage: generate_run_commands.py [-h] [--sequencing-info SEQUENCING_INFO] [--input-config INPUT_CONFIG] [--proxy-run-dir PROXY_RUN_DIR] [--additional-volumes ADDITIONAL_VOLUMES] [--cromwell-port CROMWELL_PORT] {make-run,tidy-run,summarize-run} {pecgs_TN_wxs_fq_T_rna_fq,pecgs_TN_wxs_bam_T_rna_fq} run_list run_dir
 
 positional arguments:
-+ {make-run,tidy-run,summarize-run}
-  + Which command to execute. make-run will generate scripts needed to run pipeline. tidy-run will clean up large, uneccessary input files. summarize-run will create summary files with run metadata.
-+ {pecgs_TN_wxs_fq_T_rna_fq,pecgs_TN_wxs_bam_T_rna_fq}
++ {make-run,tidy-run,summarize-run,move-run}
+  + Which command to execute. make-run will generate scripts needed to run pipeline. tidy-run will clean up large, uneccessary input files. summarize-run will create summary files with run metadata. move-run will move run to new directory and regenerate summary files.
++ {pecgs_TN_wxs_fq, pecgs_TN_wxs_bam, pecgs_TN_wgs_bam, pecgs_T_rna_fq}
   + Which pipeline version to run.
 + run_list
   + Filepath of table containing run inputs.
@@ -302,11 +324,15 @@ optional arguments:
   + Additional volumnes to map on compute1 on top of /storage1/fs1/dinglab and /scratch1/fs1/dinglab. For example if your input files do not have /storage1/fs1/dinglab and /scratch1/fs1/dinglab in their filepath then you need to include their directory here.
 + --queue
   + Which queue to run the jobs in on compute1. Default is general.
++ --target-dir
+  + Target directory to move run to. Used in move-run.
++ --no-copy
+  + Default behavior is to copy run directory to the target directory, but if --no-copy flag is included then run will be moved, deleting the original directory.
 
 ## Common Issues
 
-+ Getting a `bash: /usr/bin/java: No such file or directory` error when running `2.start_cromwell.sh`
-  + This likely means `1.start_server.sh` was run from inside an already running container. Step 1 must not be run from a running container/interactive session.
++ Getting a `bash: /usr/bin/java: No such file or directory` error.
+  + This likely means `1.run_jobs.sh` was run from inside an already running container. This script must **not** be run from a running container/interactive session.
 
 
 
