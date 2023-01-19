@@ -106,7 +106,7 @@ reference_dir:
 rescue_clinvar: false
 rescue_cosmic: false
 sample: a_string
-sample_barcode: a_string
+samples: a_string
 strelka_config:
   class: File
   path: a/file/path

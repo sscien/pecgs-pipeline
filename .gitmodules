@@ -34,3 +34,6 @@
 [submodule "submodules/pecgs-druggability"]
 	path = submodules/pecgs-druggability
 	url = https://github.com/estorrs/pecgs-druggability
+[submodule "submodules/TinDaisy"]
+	path = submodules/TinDaisy
+	url = https://github.com/estorrs/TinDaisy

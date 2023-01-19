@@ -252,10 +252,10 @@ steps:
   - id: output_maf_clean
   - id: output_vcf_clean
   - id: output_vcf_all
-  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.cwl
+  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.6.2_vep102.cwl
 - id: run_tinjasmine
   in:
-  - id: sample_barcode
+  - id: samples
     source: sample
   - id: bam
     source: normal_wxs_bam
@@ -280,7 +280,7 @@ steps:
   - id: clean_VCF
   - id: all_call_vcf
   - id: clean_MAF
-  run: ../../submodules/TinJasmine/cwl/TinJasmine.v1.2.vep-100.cwl
+  run: ../../submodules/TinJasmine/cwl/TinJasmine.v1.3.vep-102.cwl
 - id: run_neoscan
   in:
   - id: maf
