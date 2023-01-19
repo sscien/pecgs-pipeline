@@ -4,6 +4,33 @@ A CWL pipeline for running dinglab tools downstream from fastqs/bams. Built for 
 
 Currently runs on WashU RIS compute1.
 
+## Installation
+
+Clone the repository with the following command (note that it is different from the usual github clone command).
+
+```bash
+git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
+```
+
+## Updating the pipeline
+
+Due to submodule crazyness, the easiest way to update the pipeline is to remove the repository and reinstall.
+
+```bash
+rm -rf pecgs-pipeline
+git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
+```
+
+If you would like to try and update the pipeline without removing it, you can run the following.
+
+```bash
+git pull
+git submodule update submodules/
+```
+
+This command will sometimes fail due to intermediary files, and is a pain to try and fix. Usually the easier solution is just deleting the repository and reinstalling.
+
+
 ## Overview
 
 #### Tools
@@ -151,12 +178,15 @@ If you require an intermediate output for any of the tools, they can be extracte
 
 Quick Note: Example scripts for all the below steps/commands for each pipeline variant are available [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples)
 
-First, clone the repository with the following command (note that it is different from the usual github clone command).
+First, if you haven't already, clone the repository with the following command (note that it is different from the usual github clone command).
+
+```bash
+git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
+```
 
 Then navigate inside the src/compute1 directory
 
 ```bash
-git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
 cd pecgs-pipeline/src/compute1
 ```
 
