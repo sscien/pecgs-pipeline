@@ -118,6 +118,8 @@ inputs:
   type: File
 - id: pindel_config
   type: File
+- id: tindaisy_rescue_bed
+  type: File
 - id: centromere
   type: File
 - id: tinjasmine_chrlist
@@ -357,12 +359,14 @@ steps:
     source: rescue_cosmic
   - id: rescue_clinvar
     source: rescue_clinvar
+  - id: VAFRescueBED
+    source: tindaisy_rescue_bed
   label: run_tindaisy
   out:
   - id: output_maf_clean
   - id: output_vcf_clean
   - id: output_vcf_all
-  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.6.2_vep102.cwl
+  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.6.2_vep102_vafrescue.cwl
 - id: run_tinjasmine
   in:
   - id: samples

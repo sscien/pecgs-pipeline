@@ -77,11 +77,16 @@ def make_run():
     fp = os.path.realpath(__file__)
     tool_root = '/'.join(fp.split('/')[:-3])
 
+    if args.input_configs is not None:
+        input_kwargs = yaml.safe_load(open(args.input_configs))
+    else:
+        input_kwargs = {}
+
     if args.pipeline_name == 'pecgs_TN_wxs_fq':
         job_cmds = pecgs.from_run_list(
             run_map, args.run_dir, tool_root, args.pipeline_name,
             sequencing_info=sequencing_info, proxy_run_dir=args.proxy_run_dir,
-            queue=args.queue)
+            input_kwargs=input_kwargs, queue=args.queue)
     elif args.pipeline_name in ['pecgs_TN_wxs_bam', 'pecgs_TN_wgs_bam', 'pecgs_T_rna_fq']:
         job_cmds = pecgs.from_run_list(
             run_map, args.run_dir, tool_root, args.pipeline_name,

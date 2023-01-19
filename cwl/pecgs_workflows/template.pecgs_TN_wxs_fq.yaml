@@ -116,6 +116,9 @@ target_interval_list:
 tindaisy_chrlist:
   class: File
   path: a/file/path
+tindaisy_rescue_bed:
+  class: File
+  path: a/file/path
 tindaisy_vep_cache_gz:
   class: File
   path: a/file/path
