@@ -1,0 +1,81 @@
+```
+
+```
+
+```
+```
+
+Steps taken and summary of results are below.
+
+--> convert vcf.gz file to vcf
+
+cd /diskmnt/Projects/Users/ysong/project/PECGS/Analysis/pecgs_batch1/Ding
+for f in *.vcf.gz; do
+   gzip -d "$f"
+done
+
+cd /diskmnt/Projects/Users/ysong/project/PECGS/Analysis/pecgs_batch1/Spencer
+for f in *.vcf.gz; do
+   gzip -d "$f"
+done
+
+--> VCF normalization:
+conda activate sambcf
+
+cd /diskmnt/Projects/Users/ysong/project/PECGS/Analysis/pecgs_batch1/Ding
+for f in *.vcf; do
+   bcftools norm -f /diskmnt/Projects/Users/ysong/test_data/GRCh38.d1.vd1.fa --multiallelics - --check-ref e -Oz -o "normalized.$f" "$f"
+done
+
+cd /diskmnt/Projects/Users/ysong/project/PECGS/Analysis/pecgs_batch1/Spencer
+for f in *.vcf; do
+   bcftools norm -f /diskmnt/Projects/Users/ysong/test_data/GRCh38.d1.vd1.fa --multiallelics - --check-ref e -Oz -o "normalized.$f" "$f"
+done
+
+--> convert vcf file to vcf.gz
+
+cd /diskmnt/Projects/Users/ysong/project/variant_calling_pipeline/pipeline_comparison/TinDaisy_vs_SomaticWrapper/TinDaisy_vcf
+for f in normalized.*.vcf; do
+   bgzip -c "$f" >"$f.gz"
+done
+
+cd /diskmnt/Projects/Users/ysong/project/variant_calling_pipeline/pipeline_comparison/TinDaisy_vs_SomaticWrapper/Somatic_Wrapper_vcf
+for f in normalized.*.vcf; do
+   bgzip -c "$f" >"$f.gz"
+done
+
+--> Indexed resulting vcfs with tabix
+cd /diskmnt/Projects/Users/ysong/project/variant_calling_pipeline/pipeline_comparison/TinDaisy_vs_SomaticWrapper/Somatic_Wrapper_vcf
+for f in normalized.*.vcf.gz; do
+   tabix -p vcf  "$f"
+done
+
+
+cd /diskmnt/Projects/Users/ysong/project/variant_calling_pipeline/pipeline_comparison/TinDaisy_vs_SomaticWrapper/TinDaisy_vcf
+for f in normalized.*.vcf.gz; do
+   tabix -p vcf  "$f"
+done
+
+--> Compared resulting VCFs:
+
+find /diskmnt/Projects/Users/ysong/project/variant_calling_pipeline/pipeline_comparison/TinDaisy_vs_SomaticWrapper/ -name "normalized.*.vcf.gz" > /diskmnt/Projects/Users/ysong/project/variant_calling_pipeline/pipeline_comparison/TinDaisy_vs_SomaticWrapper/Comparison_vcf/vcf.list
+
+cat BCF.list
+
+paste BCF.list | while read BCF ;
+do
+        echo "Processing ""${BCF}""..."
+
+        #Create results filename
+        resultsfile=$(echo "${BCF}" | sed 's/.bcf$//g') ;
+        echo -e "Results file will be ""${resultsfile}\n" ;
+
+        #Add security to ensure that your input files are not overwritten
+        if [ "${BCF}" == "${resultsfile}" ]
+        then
+             echo "Error! - input filename is the same as output file/directory!"
+             exit 1 ;
+        fi
+
+        bcftools isec Baseline.bcf "${BCF}" -p "${resultsfile}" ;
+done ;
