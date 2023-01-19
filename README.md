@@ -90,8 +90,12 @@ The inputs to the pipeline are specified in a **run list** file. See an example 
 
 These columns will change depending on which pipeline variant is being used and are listed for each pipeline in the section below.
 
++ project
+  + used in WXS pipelines. Specifies project specific cofigurations. Currently, this is used in selecting BED files for VAF rescue in TinDaisy.
 + disease
-  + used in WXS pipelines. Specifies the cancer type of a given case. Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
+  + used in WXS pipelines. Specifies the cancer type of a given case. Is used in two places in the pipeline
+    + Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
+    + Is used to select the VAF rescue bed file to use with TinDaisy. If the project is PECGS, CHOL, MM, and CHOL are valid diseases and a bed file will be selected specfic to those cancer types that has been made for the PECGS project. If project is TCGA, then all cancer type abbreviations in TCGA are valid. Otherwise, a default list of 299 genes from the pancan driver paper will be used.
 
 For file and directory path inputs, there will be two columns in the run list: one specifying the filepath, and another specifying the [universally unique identifier (UUID)](https://en.wikipedia.org/wiki/Universally_unique_identifier) of the file. The file uuid is for tracking purposes, so if you don't care too much about that you can just use integers or make up a random string here. For PE-CGS runs please use the uuid for the file that is in the bammap.
 
