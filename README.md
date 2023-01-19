@@ -295,7 +295,7 @@ A run directory for the [pecgs_TN_wxs_bam](https://github.com/ding-lab/pecgs-pip
 
 A run directory for the [pecgs_TN_wgs_bam](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_TN_wgs_bam) test example with all logs, inputs, runs, and generated scripts/summary files can be found at ``.
 
-A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at ``.
+A run directory for the [pecgs_T_rna_fq](https://github.com/ding-lab/pecgs-pipeline/tree/master/examples/pecgs_T_rna_fq) test example with all logs, inputs, runs, and generated scripts/summary files can be found at `/storage1/fs1/dinglab/Active/Projects/estorrs/wombat/tests/data/pecgs_T_rna_fq/run`.
 
 ## Additional arguments to generate_run_commands.py
 
@@ -331,8 +331,8 @@ optional arguments:
 
 ## Common Issues
 
-+ Getting a `bash: /usr/bin/java: No such file or directory` error when running `2.start_cromwell.sh`
-  + This likely means `1.start_server.sh` was run from inside an already running container. Step 1 must not be run from a running container/interactive session.
++ Getting a `bash: /usr/bin/java: No such file or directory` error.
+  + This likely means `1.run_jobs.sh` was run from inside an already running container. This script must **not** be run from a running container/interactive session.
 
 
 
