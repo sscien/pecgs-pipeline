@@ -18,12 +18,6 @@ inputs:
   type: File
 - id: normal_wxs_fq_2
   type: File
-- default: $(inputs.sample).WXS.T
-  id: tumor_sample
-  type: string?
-- default: $(inputs.sample).WXS.N
-  id: normal_sample
-  type: string?
 - id: known_sites
   secondaryFiles:
   - .tbi
@@ -217,7 +211,8 @@ steps:
 - id: align_tumor_wxs
   in:
   - id: sample
-    source: tumor_sample
+    source: sample
+    valueFrom: $(self).WXS.T
   - id: cpu
     source: cpu
   - id: fq_1
@@ -245,7 +240,8 @@ steps:
 - id: align_normal_wxs
   in:
   - id: sample
-    source: normal_sample
+    source: sample
+    valueFrom: $(self).WXS.N
   - id: cpu
     source: cpu
   - id: fq_1
