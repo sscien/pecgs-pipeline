@@ -90,8 +90,12 @@ The inputs to the pipeline are specified in a **run list** file. See an example 
 
 These columns will change depending on which pipeline variant is being used and are listed for each pipeline in the section below.
 
++ project
+  + used in WXS pipelines. Specifies project specific cofigurations. Currently, this is used in selecting BED files for VAF rescue in TinDaisy.
 + disease
-  + used in WXS pipelines. Specifies the cancer type of a given case. Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
+  + used in WXS pipelines. Specifies the cancer type of a given case. Is used in two places in the pipeline
+    + Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
+    + Is used to select the VAF rescue bed file to use with TinDaisy. If the project is PECGS, CHOL, MM, and CHOL are valid diseases and a bed file will be selected specfic to those cancer types that has been made for the PECGS project. If project is TCGA, then all cancer type abbreviations in TCGA are valid. Otherwise, a default list of 299 genes from the pancan driver paper will be used.
 
 For file and directory path inputs, there will be two columns in the run list: one specifying the filepath, and another specifying the [universally unique identifier (UUID)](https://en.wikipedia.org/wiki/Universally_unique_identifier) of the file. The file uuid is for tracking purposes, so if you don't care too much about that you can just use integers or make up a random string here. For PE-CGS runs please use the uuid for the file that is in the bammap.
 
@@ -103,27 +107,27 @@ The following pipelines are available:
     + Tumor WXS fastqs
     + Normal WXS fastqs
   + run list columns
-    + `run_id`, `case_id`, `disease`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
+    + `run_id`, `case_id`, `project`, `disease`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_fq/run_list.txt)
 + **pecgs_TN_wxs_bam**
   + inputs
     + Tumor WXS bam
     + Normal WXS bam
   + run list columns
-    + `run_id`, `case_id`, `disease`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
+    + `run_id`, `case_id`, `project`, `disease`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt)
 + **pecgs_TN_wgs_bam**
   + inputs
     + Tumor WGS bam
     + Normal WGS bam
   + run list columns
-    + `run_id`, `case_id`, `run_uuid`, `wgs_normal_bam.filepath`, `wgs_normal_bam.uuid`, `wgs_tumor_bam.filepath`, `wgs_tumor_bam.uuid`
+    + `run_id`, `case_id`, `project`, `run_uuid`, `wgs_normal_bam.filepath`, `wgs_normal_bam.uuid`, `wgs_tumor_bam.filepath`, `wgs_tumor_bam.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wgs_bam/run_list.txt)
 + **pecgs_T_rna_fq**
   + inputs
     + Tumor RNA-seq fastqs
   + run list columns
-    + `run_id`, `case_id`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`
+    + `run_id`, `case_id`, `project`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_T_rna_fq/run_list.txt)
 
 #### Outputs
