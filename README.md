@@ -107,27 +107,27 @@ The following pipelines are available:
     + Tumor WXS fastqs
     + Normal WXS fastqs
   + run list columns
-    + `run_id`, `case_id`, `disease`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
+    + `run_id`, `case_id`, `project`, `disease`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_fq/run_list.txt)
 + **pecgs_TN_wxs_bam**
   + inputs
     + Tumor WXS bam
     + Normal WXS bam
   + run list columns
-    + `run_id`, `case_id`, `disease`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
+    + `run_id`, `case_id`, `project`, `disease`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt)
 + **pecgs_TN_wgs_bam**
   + inputs
     + Tumor WGS bam
     + Normal WGS bam
   + run list columns
-    + `run_id`, `case_id`, `run_uuid`, `wgs_normal_bam.filepath`, `wgs_normal_bam.uuid`, `wgs_tumor_bam.filepath`, `wgs_tumor_bam.uuid`
+    + `run_id`, `case_id`, `project`, `run_uuid`, `wgs_normal_bam.filepath`, `wgs_normal_bam.uuid`, `wgs_tumor_bam.filepath`, `wgs_tumor_bam.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wgs_bam/run_list.txt)
 + **pecgs_T_rna_fq**
   + inputs
     + Tumor RNA-seq fastqs
   + run list columns
-    + `run_id`, `case_id`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`
+    + `run_id`, `case_id`, `project`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_T_rna_fq/run_list.txt)
 
 #### Outputs
