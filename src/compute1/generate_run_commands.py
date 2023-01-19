@@ -77,10 +77,10 @@ def make_run():
     fp = os.path.realpath(__file__)
     tool_root = '/'.join(fp.split('/')[:-3])
 
-    if args.input_configs is not None:
-        input_kwargs = yaml.safe_load(open(args.input_configs))
+    if args.input_config is not None:
+        input_kwargs = yaml.safe_load(open(args.input_config))
     else:
-        input_kwargs = {}
+        input_kwargs = None
 
     if args.pipeline_name == 'pecgs_TN_wxs_fq':
         job_cmds = pecgs.from_run_list(
