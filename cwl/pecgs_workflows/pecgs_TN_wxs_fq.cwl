@@ -390,7 +390,7 @@ steps:
   - id: clean_VCF
   - id: all_call_vcf
   - id: clean_MAF
-  run: ../../submodules/TinJasmine/cwl/TinJasmine.v1.3.vep-102.cwl
+  run: ../../submodules/TinJasmine/cwl/TinJasmine.v1.4.vep-102.cwl
 - id: run_neoscan
   in:
   - id: maf
