@@ -57,6 +57,11 @@ NORMAL_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/PanRCC/Data/Analysis/KIRC_
 OUTPUT_DIR=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/WGS_CNV/
 CONFIG_FILE=/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/wgs/config/config.gatk4scna.wgs.compute1.ini
 
+OUTPUT_DIR=/scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/WGS_CNV/
+
+mkdir -p $OUTPUT_DIR
+cd $OUTPUT_DIR
+
 # Step 1 (precall)
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.wgs.cnv.compute1.sh \
   -p precall \
