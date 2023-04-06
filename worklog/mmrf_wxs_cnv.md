@@ -4,12 +4,16 @@
 export LSF_DOCKER_VOLUMES="$HOME:$HOME $STORAGE1_DINGLAB:$STORAGE1_DINGLAB $STORAGE1_MATT:$STORAGE1_MATT $SCRATCH1_DINGLAB:$SCRATCH1_DINGLAB"
 
 # Define common input arguments as variables
-TUMOR_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/PanRCC/Data/Analysis/KIRC_RNA/KIRC_CNV_run_list/WES_allTumorBAM.list
-NORMAL_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/PanRCC/Data/Analysis/KIRC_RNA/KIRC_CNV_run_list/WES_normalBAM.list
-OUTPUT_DIR=/scratch1/fs1/dinglab/Active/Projects/ysong/KIRC/WES_CNV_pon/
+TUMOR_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/runlist/MMRF_WES_allTumorBAM_v1.txt
+NORMAL_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/runlist/MMRF_WES_allNormaBAM_v1.txt
+OUTPUT_DIR=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/WES_CNV/
 CONFIG_FILE=/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/config/config.gatk4scna.compute1.ini
 
+
+cd $OUTPUT_DIR
+
 # Step 1 (precall)
+
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.cnv.compute1.sh -p precall -t $TUMOR_BAM_LIST -M $NORMAL_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
 
 # Step 2 (PON)
