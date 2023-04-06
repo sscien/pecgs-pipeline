@@ -45,7 +45,22 @@ bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.cnv.compute1.sh -p merge -o $OUTPUT_DIR -c $CONFIG_FILE
 
 # Step 5.5 (Calls chr_arm-level)
-bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.cnv.compute1.sh -p chrarmLevel -t $TUMOR_BAM_LIST -
+bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.cnv.compute1.sh -p chrarmLevel -t $TUMOR_BAM_LIST -\
+  -
+# Step 5.5 (Calls chr_arm-level)
+
+bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.wes.cnv.compute1.sh
+-p chrarmLevel
+-t $TUMOR_BAM_LIST
+-o $OUTPUT_DIR
+-c $CONFIG_FILE
+
+# Step 6.5 (Merge arm-level files to one file)
+
+bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.wes.cnv.compute1.sh
+-p chrarmmerge
+-o $OUTPUT_DIR
+-c $CONFIG_FILE
 
 ```
 # WGS call
