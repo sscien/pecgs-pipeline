@@ -11,7 +11,12 @@ NORMAL_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.C
 OUTPUT_DIR=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/WES_CNV/
 CONFIG_FILE=/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/config/config.gatk4scna.compute1.ini
 
+TUMOR_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/runlist/MMRF_WES_allTumorBAM_v1.txt
+NORMAL_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/runlist/MMRF_WES_allNormaBAM_v1.txt
+OUTPUT_DIR=/scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/WES_CNV/
+CONFIG_FILE=/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/config/config.gatk4scna.compute1.ini
 
+mkdir -p $OUTPUT_DIR
 cd $OUTPUT_DIR
 
 # Step 1 (precall)
