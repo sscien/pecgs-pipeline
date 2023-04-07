@@ -28,6 +28,22 @@ bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalo
 -o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM \
 -p BWA 
 ```
+
+
+## faster ones for mutiple jobs
+```
+
+
+export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/
+
+bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh
+-c /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.compute1.ini \
+-t /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq/map.20230405.tsv \
+-o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2 \
+-p BWA 
+
+```
 This is what I run when I do WES stuff. It should also work for WGS.
 
 
