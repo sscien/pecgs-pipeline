@@ -25,6 +25,10 @@ bash $Script -p pon -o $OUTPUT_DIR -c $CONFIG_FILE
 # Step 3 (CNV calls all using tumor-only version)
 bash $Script -p callcn_tumor_only -t $TUMOR_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
 
+# Step 3.5 (CNV calls normal)
+bash $Script -p callnormal -M $NORMAL_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
+# Step 4.5 (plot normals)
+bash $Script -p plotNormal -M $NORMAL_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
 
 # Step 4 (plot all Tumor)
 bash $Script -p plot -t $TUMOR_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
