@@ -53,6 +53,7 @@ bash $Script -p chrarmLevel -t $TUMOR_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
 # Step 6.7 (Merge band-level files to one file)
 bash $Script -p chrarmmerge -o $OUTPUT_DIR -c $CONFIG_FILE
 ```
+
 # WXS call
 ### define the common input arguments as variables and reuse them in each command to avoid repetition
 ```
@@ -112,8 +113,8 @@ bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/GATK4SCNA_v2/gatk_som
 # Step 6.7 (Merge band-level files to one file)
 bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/GATK4SCNA_v2/gatk_somatic.cnv.compute1.sh -p chrarmmerge -o $OUTPUT_DIR -c $CONFIG_FILE
 ```
-# WGS call
 
+# WGS call
 ```
 # Define common input arguments as variables
 TUMOR_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/PanRCC/Data/Analysis/KIRC_RNA/KIRC_CNV_run_list/WGS_allTumorBAM.list
@@ -195,4 +196,60 @@ bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic
 -p chrarmmerge \
 -o $OUTPUT_DIR \
 -c $CONFIG_FILE
+```
+
+# WGS call
+### define the common input arguments as variables and reuse them in each command to avoid repetition
+```
+
+export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
+
+# Define common input arguments as variables
+TUMOR_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/runlist/MMRF_WGS_allTumorBAM_v2.txt
+NORMAL_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/runlist/MMRF_WGS_allNormaBAM_v2.txt
+#OUTPUT_DIR=/storage1/fs1/dinglab/Active/Projects/MMRF_analysis_bulk/WXS/3.CNV/WGS_CNV/
+CONFIG_FILE=/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/wgs/config/config.gatk4scna.wgs.compute1.ini
+OUTPUT_DIR=/scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/WGS_CNV/
+Script=/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.wgs.cnv.compute1.sh
+
+mkdir -p $OUTPUT_DIR
+cd $OUTPUT_DIR
+
+# Step 1 (precall)
+
+bash $Script -p precall -t $TUMOR_BAM_LIST -M $NORMAL_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
+
+# Step 2 (PON)
+bash $Script -p pon -o $OUTPUT_DIR -c $CONFIG_FILE
+
+# Step 3 (CNV calls all using tumor-only version)
+bash $Script -p callcn_tumor_only -t $TUMOR_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
+
+
+# Step 4 (plot all Tumor)
+bash $Script -p plot -t $TUMOR_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
+
+# Step 5 (Calls gene-level)
+bash $Script -p geneLevel -t $TUMOR_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
+
+# Step 6 (Merge gene-level files to one file)
+bash $Script -p merge -o $OUTPUT_DIR -c $CONFIG_FILE
+
+# Step 5.5 (Calls chr_arm-level)
+
+bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.cnv.compute1.sh -p chrarmLevel -t $TUMOR_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
+
+# Step 6.5 (Merge arm-level files to one file)
+
+bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.cnv.compute1.sh -p chrarmmerge -o $OUTPUT_DIR -c $CONFIG_FILE
+
+# rename merged.segment_level.hg38.log2ratio.tsv to merged.arm_level.hg38.log2ratio.tsv
+
+# then proceeding Step5.7
+
+# Step 5.7 (Calls chr_band-level)
+bash $Script -p chrarmLevel -t $TUMOR_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
+
+# Step 6.7 (Merge band-level files to one file)
+bash $Script -p chrarmmerge -o $OUTPUT_DIR -c $CONFIG_FILE
 ```
