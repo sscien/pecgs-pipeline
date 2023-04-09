@@ -10,7 +10,7 @@ bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalo
 ```
 
 
-
+### WXS runs 
 ```
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh 
 -c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/MMRF_WXS_fastq_to_bam_runlist.txt -o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq -p trimGalore
@@ -59,9 +59,16 @@ bsub -G compute-dinglab -q general -J 'MMRF[2-3]' -g /compute-dinglab/MMRF -n 8 
 ```
 bsub -G compute-dinglab -q general -J 'MMRF[4-200]' -g /compute-dinglab/MMRF -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2"
 ```
+# copy this to storage1
+```
+rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/ /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/
+```
 
 # 201-400
 ```
+export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/
+
 bsub -G compute-dinglab -q general -J 'MMRF[201-400]' -g /compute-dinglab/MMRF -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2"
 ```
 
