@@ -10,10 +10,24 @@ bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalo
 ```
 
 
-### WXS runs 
+### WXS runs step1
 ```
+
+export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq/
+
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh 
 -c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/MMRF_WXS_fastq_to_bam_runlist.txt -o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq -p trimGalore
+```
+
+### WGS runs step1
+```
+
+export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wgs_fq_bam/trimmed_fq/
+
+bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh 
+-c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WGS/BAM/MMRF_WGS_fastq_to_bam_runlist.txt -o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wgs_fq_bam/trimmed_fq -p trimGalore
 ```
 
 ```
