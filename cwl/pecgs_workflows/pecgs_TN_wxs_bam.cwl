@@ -32,6 +32,8 @@ inputs:
   type: File
 - id: protein_coding_gene
   type: File
+- id: cytoband
+  type: File
 - id: pool_of_normals
   type: File
 - id: microsatellite
@@ -110,6 +112,9 @@ outputs:
 - id: gene_level_cnv
   outputSource: run_cnv/gene_level_cnv
   type: File
+- id: arm_level_cnv
+  outputSource: run_cnv/arm_level_cnv
+  type: File
 - id: msisensor_output_summary
   outputSource: run_msisensor/output_summary
   type: File
@@ -178,11 +183,14 @@ steps:
     source: common_biallelic
   - id: protein_coding_gene
     source: protein_coding_gene
+  - id: cytoband
+    source: cytoband
   - id: pool_of_normals
     source: pool_of_normals
   label: run_cnv
   out:
   - id: gene_level_cnv
+  - id: arm_level_cnv
   run: ../../submodules/pecgs-cnv/cwl/cnv_workflow.cwl
 - id: run_msisensor
   in:

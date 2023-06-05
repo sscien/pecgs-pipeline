@@ -45,6 +45,9 @@ common_biallelic:
   class: File
   path: a/file/path
 cpu: a_int
+cytoband:
+  class: File
+  path: a/file/path
 disease: a_string
 microsatellite:
   class: File
