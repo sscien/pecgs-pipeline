@@ -215,7 +215,7 @@ NOTE: if the directory you intend to use for pipeline outputs is not in `/storag
 
 You should now be inside a running container.
 
-To generate the run directory, execute the following command. Replace PIPELINE_NAME with the pipeline variant you would like to run (i.e. pecgs_TN_wxs_bam), RUN_LIST with the filepath of the run list describing samples you would like to run (see inputs section for more details), and RUN_DIR with the absolute filepath where you would like the runs to execute
+To generate the run directory, execute the following command. Replace PIPELINE_NAME with the pipeline variant you would like to run (i.e. pecgs_TN_wxs_bam), RUN_LIST with the filepath of the run list describing samples you would like to run (see inputs section for more details), and RUN_DIR with the absolute filepath where you would like the runs to execute. The RUN_DIR **must** be on `/scratch1`. `/storage1` has cacheing issues that may cause some steps of the pipeline to fail.
 
 ```bash
 python generate_run_commands.py make-run PIPELINE_NAME RUN_LIST RUN_DIR
