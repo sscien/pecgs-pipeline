@@ -191,7 +191,7 @@ steps:
   out:
   - id: gene_level_cnv
   - id: arm_level_cnv
-  run: ../../submodules/pecgs-cnv/cwl/cnv.cwl
+  run: ../../submodules/pecgs-cnv/cwl/cnv_workflow.cwl
 - id: run_msisensor
   in:
   - id: threads
