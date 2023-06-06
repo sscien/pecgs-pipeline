@@ -20,6 +20,21 @@ centromere:
 centromere_bed:
   class: File
   path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs-pipeline/submodules/TinDaisy/params/centromere/ucsc-centromere.GRCh38.bed
+charger_clinvar_alleles:
+  class: File
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/charger/CharGer_dependencyFiles/clinvar_alleles.single.b38.tsv.gz
+charger_hotspot3d_clusters:
+  class: File
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/charger/CharGer_dependencyFiles/PanCan/cptac_mc3_combined_noHypers_sorted.maf.3D_Proximity.pairwise.recurrence.l0.ad10.r10.clusters
+charger_inheritance_gene_list:
+  class: File
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/charger/CharGer_dependencyFiles/PanCan/cancer_pred_genes_160genes_011321_curated_forCharGer.txt
+charger_pathogenic_variants:
+  class: File
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/charger/CharGer_dependencyFiles/PanCan/emptyRemoved_20160428_pathogenic_variants_HGVSg_VEP_grch38lifOver.vcf
+charger_pp2_gene_list:
+  class: File
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/charger/CharGer_dependencyFiles/PanCan/160cpgs.txt
 classification_config:
   class: File
   path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs-pipeline/submodules/TinDaisy/params/filter_config/classification_filter_config.ini
@@ -28,17 +43,17 @@ clinvar_annotation:
   path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/clinvar/GRCh38/clinvar_20200706.vcf.gz
 common_biallelic:
   class: File
-  path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/db/snp_database/af-only-gnomad.hg38.common_biallelic.chr1-22XY.vcf
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/db/snp_database/af-only-gnomad.hg38.common_biallelic.chr1-22XY.vcf
 cpu: 40
-gatk_filter_config:
+cytoband:
   class: File
-  path: /storage1/fs1/dinglab/Active/Resources/Pipelines/TinJasmine/TinJasmine_etc/gatk_filter_config/VLD_FilterVCF-GATK.config.ini
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/db/cytoBand.txt
 known_sites:
   class: File
-  path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/dnaseq_alignment/dbsnp/00-All.chr.vcf.gz
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/dnaseq_alignment/dbsnp/00-All.chr.vcf.gz
   secondaryFiles:
   - class: File
-    path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/dnaseq_alignment/dbsnp/00-All.chr.vcf.gz.tbi
+    path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/dnaseq_alignment/dbsnp/00-All.chr.vcf.gz.tbi
 microsatellite:
   class: File
   path: /storage1/fs1/dinglab/Active/Projects/PECGS/ref_genome/hg38.microsatellite
@@ -46,47 +61,44 @@ minimal_homopolymer_size: 1
 minimal_microsatellite_size: 1
 neoscan_bed:
   class: File
-  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources_backup/neoscan/refseq_hg38_june29/proteome.bed
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/neoscan/refseq_hg38_june29/proteome.bed
 neoscan_ref_dir:
   class: Directory
-  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources_backup/neoscan/refseq_hg38_june29
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/neoscan/refseq_hg38_june29
 pindel_config:
   class: File
   path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs-pipeline/submodules/TinDaisy/params/caller_config/pindel.WES.ini
 pindel_config_template:
   class: File
   path: /storage1/fs1/dinglab/Active/Resources/Pipelines/TinJasmine/TinJasmine_etc/pindel_config_template/pindel_germline_filter_config.ini
-pindel_filter_config:
-  class: File
-  path: /storage1/fs1/dinglab/Active/Resources/Pipelines/TinJasmine/TinJasmine_etc/pindel_filter_config/VLD_FilterVCF-pindel.config.ini
 platform: ILLUMINA
 pool_of_normals:
   class: File
-  path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/pon/create_pon/gatk4scnaPON.Normal.hdf5
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/pon/pecgs_pon_v1/create_pon/gatk4scnaPON.Normal.hdf5
 protein_coding_gene:
   class: File
-  path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/db/remaking_protein-coding/gencode.v34.annotation.gene_filterd.need_gene_symbol.no_sym.filtered_to_hgnc_protein-coding_genes.bed
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/db/gencode.v34.annotation.gene_filtered.protein_coding.ensembl_ID_no_version.protein-coding_hgnc_filtered.duplicates_removed.ensembl_ID_removed.txt
 reference:
   class: File
-  path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa
   secondaryFiles:
   - class: File
-    path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.amb
+    path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.amb
   - class: File
-    path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.ann
+    path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.ann
   - class: File
-    path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.bwt
+    path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.bwt
   - class: File
-    path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.fai
+    path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.fai
   - class: File
-    path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.pac
+    path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.pac
   - class: File
-    path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.sa
+    path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.fa.sa
   - class: File
-    path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.dict
+    path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1/GRCh38.d1.vd1.dict
 reference_dir:
   class: Directory
-  path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/references/GRCh38.d1.vd1
 rescue_clinvar: true
 rescue_cosmic: true
 strelka_config:
@@ -94,20 +106,23 @@ strelka_config:
   path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs-pipeline/submodules/TinDaisy/params/caller_config/strelka.WES.ini
 target_interval_list:
   class: File
-  path: /scratch1/fs1/dinglab/estorrs/pecgs_resources/cnv/db/IDT_xGen_Exome_Research_Panel_v1.hg38.removed_alt_chr.bed.target.preprocessed.exome.interval_list
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/cnv/db/IDT_xGen_Exome_Research_Panel_v1.hg38.removed_alt_chr.autosome_only.bed.preprocessed.exome.interval_list
 tindaisy_chrlist:
   class: File
   path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs-pipeline/submodules/TinDaisy/params/chrlist/GRCh38.d1.vd1.chrlist.txt
+tindaisy_rescue_bed:
+  class: File
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/bed/tindaisy_vaf_rescue/299_drivers.bed
+tindaisy_vep_cache_gz:
+  class: File
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/vep/20220525/vep-cache.102_GRCh38.tar.gz
+tindaisy_vep_cache_version: 102
 tinjasmine_chrlist:
   class: File
   path: /storage1/fs1/dinglab/Active/Resources/Pipelines/TinJasmine/TinJasmine_etc/chrlist/GRCh38.d1.vd1.chrlist-reordered.txt
+tinjasmine_vep_cache_gz:
+  class: File
+  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/vep/20220525/vep-cache.102_GRCh38.tar.gz
 varscan_config:
   class: File
   path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs-pipeline/submodules/TinDaisy/params/caller_config/varscan.WES.ini
-varscan_filter_config:
-  class: File
-  path: /storage1/fs1/dinglab/Active/Resources/Pipelines/TinJasmine/TinJasmine_etc/varscan_filter_config/VLD_FilterVCF-varscan.config.ini
-vep_cache_gz:
-  class: File
-  path: /storage1/fs1/dinglab/Active/Projects/estorrs/pecgs_resources/vep/v99/vep-cache.99_GRCh38.tar.gz
-vep_cache_version: 99
