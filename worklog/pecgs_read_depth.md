@@ -23,6 +23,10 @@ bash wes_coverage_from_table.sh $BamPathFile
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 bash wes_coverage_from_table.sh "${BamPathFile}"
 
+#
+condapython
+python plot-dist.py ../*.region.dist.txt
+python parse_coverage_results.py -i dist.html -s ./samples.txt -o ./
 
 ## step2
 
