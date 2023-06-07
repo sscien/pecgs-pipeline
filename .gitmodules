@@ -37,3 +37,6 @@
 [submodule "submodules/TinDaisy"]
 	path = submodules/TinDaisy
 	url = https://github.com/estorrs/TinDaisy
+[submodule "submodules/pecgs-somaticwrapper"]
+	path = submodules/pecgs-somaticwrapper
+	url = https://github.com/estorrs/pecgs-somaticwrapper
