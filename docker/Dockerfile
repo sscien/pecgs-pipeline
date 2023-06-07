@@ -15,7 +15,7 @@ COPY . /pecgs-pipeline
 ENV PATH="/miniconda/envs/pecgs/bin:$PATH"
 
 # random string to force rebuild from here
-RUN echo 'zlcoagl'
+RUN echo 'zlclcal'
 
 RUN pip install git+https://github.com/estorrs/wombat
 
