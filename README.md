@@ -41,8 +41,9 @@ The following tools are incorporated into the pecgs-pipeline:
   + Only run in pipelines where wxs/wgs fastqs are present as inputs
   + [github repo](https://github.com/estorrs/align-dnaseq)
 + Somatic variant calling
-  + Runs TinDaisy variant caller
-  + [github repo](https://github.com/ding-lab/TinDaisy)
+  + Runs TinDaisy and somaticwrapper variant callers
+    + [TinDaisy github repo](https://github.com/ding-lab/TinDaisy)
+    + [somaticwrapper github repo](https://github.com/estorrs/pecgs-somaticwrapper)
 + Germline variant calling
   + Runs TinJasmine variant caller
   + [github repo](https://github.com/ding-lab/TinJasmine)
@@ -76,6 +77,8 @@ The following tools are incorporated into the pecgs-pipeline:
 There are multiple pipeline variants that are dependent on available input data types. Currently there are only three variants, though more may be available in the future.
 
 The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt). This is a tab-sperated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
+
+**Important: please do not include spaces or special characters in the run id or case id, as this could lead to issues when the pipeline is naming files. Only use alphanumeric characters (A-Z, 0-9), hyphens (-), and underscores(_).** 
 
 *Common columns*
 
@@ -144,6 +147,8 @@ The outputs are the following and seperated by pipeline input data type:
     + tindaisy_output_vcf_all
     + tindaisy_output_vcf_clean
     + tindaisy_output_maf_clean
+    + somaticwrapper_dnp_annotated_maf
+    + somaticwrapper_withmutect_maf
   + Germline variant calling
     + tinjasmine_output_vcf_all
     + tinjasmine_output_vcf_clean
