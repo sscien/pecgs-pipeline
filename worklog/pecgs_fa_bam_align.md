@@ -1,11 +1,11 @@
 Example of how to run trimGalore:
 ```
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq/
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/
 
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini \
--t /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/MMRF_WXS_fastq_to_bam_runlist.txt \
--o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq \
+-t /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/pecgs_WXS_fastq_to_bam_runlist.txt \
+-o /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq \
 -p trimGalore
 ```
 
@@ -14,45 +14,61 @@ bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalo
 ```
 
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq/
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/
 
-bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/MMRF_WXS_fastq_to_bam_runlist.txt -o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq -p trimGalore
+bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/2023_06_fastq_bam/PECGS_WXS_fastq_to_bam_runlist_batch1.txt -o /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq -p trimGalore
+```
+
+## WXS runs step2 (with Gencode 36)
+```
+
+export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/
+
+bsub -G compute-dinglab -q general -J 'pecgs[1-28]' -g /compute-dinglab/pecgs -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/logs/%J.%I.err.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2"
+```
+/scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv
+# copy this to storage1
+```
+rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/ /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/
 ```
 
 ### WGS runs step1
 ```
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wgs_fq_bam/trimmed_fq/
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wgs_fq_bam/trimmed_fq/
 
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh 
--c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WGS/BAM/MMRF_WGS_fastq_to_bam_runlist.txt -o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wgs_fq_bam/trimmed_fq -p trimGalore
+-c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WGS/BAM/pecgs_WGS_fastq_to_bam_runlist.txt -o /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wgs_fq_bam/trimmed_fq -p trimGalore
 ```
 ### WGS runs step2
 ```
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 
-mkdir -p /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WGS/BAM/
+mkdir -p /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WGS/BAM/
 
-bsub -G compute-dinglab -q general -J 'MMRF[2-707]' -g /compute-dinglab/MMRF -n 2 -oo /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WGS/BAM/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wgs_fq_bam/trimmed_fq/map.20230410.tsv -O /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WGS/BAM"
+bsub -G compute-dinglab -q general -J 'pecgs[2-707]' -g /compute-dinglab/pecgs -n 2 -oo /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WGS/BAM/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wgs_fq_bam/trimmed_fq/map.20230410.tsv -O /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WGS/BAM"
 ```
 
+## move fastq files from scratch1 to storage1
 ```
-rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq/ /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/trimmed_fq/
+rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/ /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/trimmed_fq/
 
-mkdir -p /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WGS/trimmed_fq/
-rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wgs_fq_bam/trimmed_fq/ /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WGS/trimmed_fq/
+mkdir -p /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WGS/trimmed_fq/
+rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wgs_fq_bam/trimmed_fq/ /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WGS/trimmed_fq/
+
 ```
 Example of how I align with BWA. The input table is generated by the bash script that is used to run trimGalore.
 
 ```
 
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM/
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM/
 
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh 
 -c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini \
--t /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq/map.20230405.tsv \
--o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM \
+-t /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230405.tsv \
+-o /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM \
 -p BWA 
 ```
 
@@ -62,9 +78,9 @@ bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalo
 
 
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/
 
-bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/trimmed_fq/map.20230405.tsv -o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2 -p BWA 
+bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/trimmed_fq/map.20230405.tsv -o /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2 -p BWA 
 
 ```
 
@@ -72,38 +88,38 @@ bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/trimGal
 ```
 
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/
 
-bsub -G compute-dinglab -q general -J 'MMRF[2-3]' -g /compute-dinglab/MMRF -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/logs/%J.%I.err.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2"
+bsub -G compute-dinglab -q general -J 'pecgs[2-3]' -g /compute-dinglab/pecgs -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/logs/%J.%I.err.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2"
 ```
 
 # 4-200
 ```
-bsub -G compute-dinglab -q general -J 'MMRF[4-200]' -g /compute-dinglab/MMRF -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2"
+bsub -G compute-dinglab -q general -J 'pecgs[4-200]' -g /compute-dinglab/pecgs -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2"
 ```
 # copy this to storage1
 ```
-rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/ /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/
+rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/ /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/
 ```
 
 # 201-350
 ```
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 
-mkdir -p /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/
+mkdir -p /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/
 
-bsub -G compute-dinglab -q general -J 'MMRF[201-350]' -g /compute-dinglab/MMRF -n 2 -oo /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM"
+bsub -G compute-dinglab -q general -J 'pecgs[201-350]' -g /compute-dinglab/pecgs -n 2 -oo /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM"
 
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/
-bsub -G compute-dinglab -q general -J 'MMRF[201-350]' -g /compute-dinglab/MMRF -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2"
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/
+bsub -G compute-dinglab -q general -J 'pecgs[201-350]' -g /compute-dinglab/pecgs -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2"
 ```
 # 351-500
 ```
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 
-mkdir -p /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/
+mkdir -p /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/
 
-bsub -G compute-dinglab -q general -J 'MMRF[351-500]' -g /compute-dinglab/MMRF -n 2 -oo /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM"
+bsub -G compute-dinglab -q general -J 'pecgs[351-500]' -g /compute-dinglab/pecgs -n 2 -oo /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM"
  
 ```
 
@@ -111,9 +127,9 @@ bsub -G compute-dinglab -q general -J 'MMRF[351-500]' -g /compute-dinglab/MMRF -
 ```
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 
-mkdir -p /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/
+mkdir -p /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/
 
-bsub -G compute-dinglab -q general -J 'MMRF[501-710]' -g /compute-dinglab/MMRF -n 2 -oo /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM"
+bsub -G compute-dinglab -q general -J 'pecgs[501-710]' -g /compute-dinglab/pecgs -n 2 -oo /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM"
  
 ```
 
@@ -121,19 +137,19 @@ bsub -G compute-dinglab -q general -J 'MMRF[501-710]' -g /compute-dinglab/MMRF -
 
 # 401-600
 ```
-bsub -G compute-dinglab -q general -J 'MMRF[401-600]' -g /compute-dinglab/MMRF -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2"
+bsub -G compute-dinglab -q general -J 'pecgs[401-600]' -g /compute-dinglab/pecgs -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2"
 ```
 
 # 601-710
 ```
-bsub -G compute-dinglab -q general -J 'MMRF[601-710]' -g /compute-dinglab/MMRF -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2"
+bsub -G compute-dinglab -q general -J 'pecgs[601-710]' -g /compute-dinglab/pecgs -n 2 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/logs/%J.%I.map.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 2 -1 /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2"
 ```
 
 
-outdir ="/scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2"
-worklist="/storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt"
+outdir ="/scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2"
+worklist="/storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/catalog/WXS_trimmed_fq_catalog.txt"
 
-bsub -G compute-dinglab -q general -J 'MMRF[2-3]' -g /compute-dinglab/MMRF -n 8 -oo $outdir/logs/%J.%I.map.log -eo $outdir/logs/%J.%I.err.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 $worklist -O $outdir"
+bsub -G compute-dinglab -q general -J 'pecgs[2-3]' -g /compute-dinglab/pecgs -n 8 -oo $outdir/logs/%J.%I.map.log -eo $outdir/logs/%J.%I.err.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 $worklist -O $outdir"
 
 
     
@@ -144,13 +160,13 @@ bsub -G compute-dinglab -q general -J 'MMRF[2-3]' -g /compute-dinglab/MMRF -n 8 
 ```
 
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/
 
-bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.compute1.ini -t /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/trimmed_fq/batch2.tsv -o /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2 -p BWA 
+bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.compute1.ini -t /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/batch2.tsv -o /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2 -p BWA 
 ```
 
 ```
-rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/BAM_v2/ /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/
+rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v2/ /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/
 
 ```
 
@@ -174,17 +190,17 @@ bsub -q dinglab-interactive -G compute-dinglab -Is -a 'docker(estorrs/pecgs-pipe
 # step2
 
 ```
-rm -r /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/*
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/
+rm -r /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/*
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/
 
-python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs_dna_align_v2023_03/src/compute1/generate_run_commands.py make-run --sequencing-info /storage1/fs1/dinglab/Active/Projects/andretargino/Draft/sequencing_info.txt --queue general pecgs_TN_wxs_fq /storage1/fs1/dinglab/Active/Projects/MMRF_primary_bulk/WXS/BAM/MMRF_WXS_fastq_pecgs_runlist.txt /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/
+python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs_dna_align_v2023_03/src/compute1/generate_run_commands.py make-run --sequencing-info /storage1/fs1/dinglab/Active/Projects/andretargino/Draft/sequencing_info.txt --queue general pecgs_TN_wxs_fq /storage1/fs1/dinglab/Active/Projects/pecgs_primary_bulk/WXS/BAM/pecgs_WXS_fastq_pecgs_runlist.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/
 ```
 
 
 # step3 (NEW Terminal)
 
 ```
-cd /scratch1/fs1/dinglab/Active/Projects/ysong/mmrf/mmrf_wxs_fq_bam/
+cd /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/
 bash 1.run_jobs.sh
 ```
 
