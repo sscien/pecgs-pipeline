@@ -27,9 +27,9 @@ rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/tr
 ```
 
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM/
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM/logs/
 
-bsub -G compute-dinglab -q general -J 'pecgs[1-28]' -g /compute-dinglab/pecgs -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM/logs/%J.%I.err.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM"
+bsub -G compute-dinglab -q general -J 'pecgs[2-27]' -g /compute-dinglab/pecgs -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM/logs/%J.%I.err.log -R "select[mem>120GB] span[hosts=1] rusage[mem=120GB]" -M 120GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM"
 ```
 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv
 
