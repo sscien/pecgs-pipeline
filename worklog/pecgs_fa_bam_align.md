@@ -48,6 +48,25 @@ bsub -G compute-dinglab -q general -J 'pecgs[17]' -g /compute-dinglab/pecgs -n 8
 ```
 
 
+## rerun_ step2
+
+```
+
+export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
+mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/
+
+
+bsub -G compute-dinglab -q general -J 'pecgs[12]' -g /compute-dinglab/pecgs -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/%J.%I.err.log -R "select[mem>200GB] rusage[mem=200GB]" -M 200GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch_v2.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3"
+
+bsub -G compute-dinglab -q general -J 'pecgs[15]' -g /compute-dinglab/pecgs -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/%J.%I.err.log -R "select[mem>200GB] rusage[mem=200GB]" -M 200GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch_v2.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3"
+
+
+bsub -G compute-dinglab -q general -J 'pecgs[17]' -g /compute-dinglab/pecgs -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/%J.%I.err.log -R "select[mem>200GB] rusage[mem=200GB]" -M 200GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch_v2.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3"
+
+
+bsub -G compute-dinglab -q general -J 'pecgs[29]' -g /compute-dinglab/pecgs -n 8 -oo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/%J.%I.map.log -eo /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3/logs/%J.%I.err.log -R "select[mem>200GB] rusage[mem=200GB]" -M 200GB -a 'docker(austins2/bwa)' "bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/human.DNA.makeBamFromFq.batch_v2.sh -C /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -N 8 -1 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv -O /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BAM_v3"
+```
+
 /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/trimmed_fq/map.20230613.tsv
 
 # copy this to storage1
@@ -71,6 +90,8 @@ rsync -avu /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_fq_bam/BA
 outdir="/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/2023_06_read_depth_batch1"
 BamPathFile="${outdir}/PECGS_batch1_re_aligned_bam.txt"
 
+BamPathFile="/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/2023_06_read_depth_batch1/PECGS_batch1_re_aligned_bam.txt"
+
 mkdir -p "${outdir}/summary"
 mkdir -p "${outdir}/logs"
 cd "${outdir}" || exit 1
@@ -90,11 +111,14 @@ export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab /s
 bash wes_coverage_from_table.sh "${BamPathFile}"
 
 ## step2
+cd $outdir/summary
 condapython
+conda activate base
 python plot-dist.py ../*.region.dist.txt
 
+python plot-dist.py ../*.region.dist.txt >coverage_results_pecgs_align_v2_vs_Spencer_align.tsv
 ## step3
-python parse_coverage_results.py -i dist.html -s ./samples.txt -o ./
+python parse_coverage_results.py -i dist.html -s ../samples.txt -o ./
 
 ## step2
 
