@@ -78,6 +78,8 @@ There are multiple pipeline variants that are dependent on available input data 
 
 The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt). This is a tab-sperated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
 
+**Important: please limit the number of cases in the run list to less than ~10-15 for each run of the pipeline. Cromwell leaves around a lot of temporary files that are quite large and can quickly fill up our labs `/scratch1` allocation if too many cases are run simultaneously. If you have a large number of cases to run, please run them in batches one after another.**
+
 **Important: please do not include spaces or special characters in the run id or case id, as this could lead to issues when the pipeline is naming files. Only use alphanumeric characters (A-Z, 0-9), hyphens (-), and underscores(_).** 
 
 *Common columns*
