@@ -224,9 +224,9 @@ steps:
   - id: sample
     source: sample
   - id: tumor_bam
-    source: align_tumor_wxs/output_bam
+    source: tumor_wxs_bam
   - id: normal_bam
-    source: align_normal_wxs/output_bam
+    source: normal_wxs_bam
   - id: reference
     source: reference
   - id: rescue_genes
