@@ -178,6 +178,9 @@ outputs:
 - id: somaticwrapper_dnp_annotated_maf
   outputSource: run_somaticwrapper/dnp_annotated_maf
   type: File
+- id: somaticwrapper_dnp_annotated_coding_maf
+  outputSource: run_somaticwrapper/dnp_annotated_coding_maf
+  type: File
 - id: somaticwrapper_withmutect_maf
   outputSource: run_somaticwrapper/withmutect_maf
   type: File
@@ -340,6 +343,7 @@ steps:
   label: run_somaticwrapper
   out:
   - id: dnp_annotated_maf
+  - id: dnp_annotated_coding_maf
   - id: withmutect_maf
   run: ../../submodules/pecgs-somaticwrapper/cwl/somaticwrapper.cwl
 - id: run_tindaisy
