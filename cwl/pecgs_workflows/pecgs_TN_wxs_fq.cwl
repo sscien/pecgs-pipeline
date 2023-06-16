@@ -393,7 +393,7 @@ steps:
   - id: output_maf_clean
   - id: output_vcf_clean
   - id: output_vcf_all
-  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.6.2_vep102_vafrescue.cwl
+  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.7.0_vep102_vafrescue.cwl
 - id: run_tinjasmine
   in:
   - id: samples
