@@ -16,6 +16,15 @@ bsub -q general-interactive -G compute-dinglab -Is -a 'docker(estorrs/pecgs-pipe
 
 ```
 
+```
+
+cp /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_wxs_bam_runlist_updated_2023_06_15.txt /storage1/fs1/dinglab/Active/Projects/PECGS/PECGS_analysis/run_list
+
+
+cp /storage1/fs1/dinglab/Active/Projects/andretargino/Draft/run_list.txt /storage1/fs1/dinglab/Active/Projects/PECGS/PECGS_analysis/run_list/PECGS_batch1_wxs_fastq_runlist.txt 
+
+```
+
 # generate run
 ```
 outdir="/scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_sv/"
