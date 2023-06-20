@@ -70,6 +70,16 @@ python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipe
 
 python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py summarize-run pecgs_TN_wxs_bam /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_wxs_bam_runlist_updated_2023_06_15.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam 
 #>> /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam/summarize_run_log.txt
+
+## impute the run_uuid with A, B ,C ,D 
+python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py summarize-run pecgs_TN_wxs_bam /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam/runlist.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam 
+
+# move run
+python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py move-run pecgs_TN_wxs_bam /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam/analysis_summary.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam --target-dir /storage1/fs1/dinglab/Active/Projects/PECGS/PECGS_analysis/pecgs_batch1/run_wxs_bam
+
+
+python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py move-run pecgs_TN_wxs_bam /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam/runlist.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam --target-dir /storage1/fs1/dinglab/Active/Projects/PECGS/PECGS_analysis/pecgs_batch1/pecgs_wxs_bam
+
 # generate run
 python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py make-run  --queue general pecgs_TN_wxs_bam /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_wxs_bam_runlist_updated_2023_06_15.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam
 
