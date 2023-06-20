@@ -48,15 +48,29 @@ python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipe
  cd /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_sv
  bash 1.run_jobs.sh
 ```
-
-## wxs run 
+## wxs bam run 
 
 # generate run
 ```
+
+export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
+export PATH="/miniconda/envs/pecgs/bin:$PATH"
+bsub -q general-interactive -G compute-dinglab -Is -a 'docker(estorrs/pecgs-pipeline:0.0.1)' '/bin/bash'
+
 outdir="/scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam/"
 mkdir -p "${outdir}"
 
-#!/bin/bash
+# generate run
+python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py make-run  --queue general pecgs_TN_wxs_bam /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_wxs_bam_runlist_updated_2023_06_15.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam
+
+# tidy run
+python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py tidy-run  --queue general pecgs_TN_wxs_bam /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_wxs_bam_runlist_updated_2023_06_15.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam
+
+# summarize run
+
+python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py summarize-run pecgs_TN_wxs_bam /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_wxs_bam_runlist_updated_2023_06_15.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam 
+#>> /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam/summarize_run_log.txt
+# generate run
 python /storage1/fs1/dinglab/Active/Projects/ysong/Projects/pecgs-cwl/pecgs-pipeline/src/compute1/generate_run_commands.py make-run  --queue general pecgs_TN_wxs_bam /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_wxs_bam_runlist_updated_2023_06_15.txt /scratch1/fs1/dinglab/Active/Projects/ysong/pecgs/pecgs_wxs_bam
 
 ```
