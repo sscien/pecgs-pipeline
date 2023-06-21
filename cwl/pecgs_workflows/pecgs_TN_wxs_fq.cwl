@@ -175,6 +175,15 @@ outputs:
 - id: msisensor_output_somatic
   outputSource: run_msisensor/output_somatic
   type: File
+- id: somaticwrapper_dnp_annotated_maf
+  outputSource: run_somaticwrapper/dnp_annotated_maf
+  type: File
+- id: somaticwrapper_dnp_annotated_coding_maf
+  outputSource: run_somaticwrapper/dnp_annotated_coding_maf
+  type: File
+- id: somaticwrapper_withmutect_maf
+  outputSource: run_somaticwrapper/withmutect_maf
+  type: File
 - id: tindaisy_output_maf_clean
   outputSource: run_tindaisy/output_maf_clean
   type: File
@@ -319,6 +328,24 @@ steps:
   - id: output_germline
   - id: output_somatic
   run: ../msisensor/msisensor_workflow.cwl
+- id: run_somaticwrapper
+  in:
+  - id: sample
+    source: sample
+  - id: tumor_bam
+    source: align_tumor_wxs/output_bam
+  - id: normal_bam
+    source: align_normal_wxs/output_bam
+  - id: reference
+    source: reference
+  - id: rescue_genes
+    source: tindaisy_rescue_bed
+  label: run_somaticwrapper
+  out:
+  - id: dnp_annotated_maf
+  - id: dnp_annotated_coding_maf
+  - id: withmutect_maf
+  run: ../../submodules/pecgs-somaticwrapper/cwl/somaticwrapper.cwl
 - id: run_tindaisy
   in:
   - id: tumor_bam
@@ -370,7 +397,7 @@ steps:
   - id: output_maf_clean
   - id: output_vcf_clean
   - id: output_vcf_all
-  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.6.2_vep102_vafrescue.cwl
+  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.7.0-vep102_vafrescue.cwl
 - id: run_tinjasmine
   in:
   - id: samples
