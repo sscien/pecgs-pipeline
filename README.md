@@ -98,7 +98,7 @@ The inputs to the pipeline are specified in a **run list** file. See an example 
 These columns will change depending on which pipeline variant is being used and are listed for each pipeline in the section below.
 
 + project
-  + used in WXS pipelines. Specifies project specific cofigurations. Currently, this is used in selecting BED files for VAF rescue in TinDaisy.
+  + used in WXS pipelines. Specifies project specific cofigurations. Currently, this is used in selecting BED files for VAF rescue in TinDaisy and somaticwrapper. If you want the bed files to be correct, make sure the project name is correct. See the `disease` bullet point for more details.
 + disease
   + used in WXS pipelines. Specifies the cancer type of a given case. Is used in two places in the pipeline
     + Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
