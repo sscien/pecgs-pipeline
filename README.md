@@ -82,6 +82,8 @@ The inputs to the pipeline are specified in a **run list** file. See an example 
 
 **Important: please do not include spaces or special characters in the run id or case id, as this could lead to issues when the pipeline is naming files. Only use alphanumeric characters (A-Z, 0-9), hyphens (-), and underscores(_).** 
 
+**Important: It is important that there are no missing values in the run list and sequencing info files. If you do do not have a value for a particular cell then make up a dummy value.** 
+
 *Common columns*
 
 + run_id
@@ -150,6 +152,7 @@ The outputs are the following and seperated by pipeline input data type:
     + tindaisy_output_vcf_clean
     + tindaisy_output_maf_clean
     + somaticwrapper_dnp_annotated_maf
+    + somaticwrapper_dnp_annotated_coding_maf
     + somaticwrapper_withmutect_maf
   + Germline variant calling
     + tinjasmine_output_vcf_all
