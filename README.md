@@ -219,7 +219,7 @@ The pecgs-pipeline is most easily run on compute1 from an interactive docker ses
 ```bash
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 export PATH="/miniconda/envs/pecgs/bin:$PATH"
-bsub -q dinglab-interactive -G compute-dinglab -Is -a 'docker(estorrs/pecgs-pipeline:0.0.1)' '/bin/bash'
+bsub -q dinglab-interactive -G compute-dinglab -Is -a 'docker(estorrs/pecgs-pipeline:0.0.2)' '/bin/bash'
 ```
 NOTE: if the directory you intend to use for pipeline outputs is not in `/storage1/fs1/dinglab/Active` or `/scratch1/fs1/dinglab` you will need to add that path to the LSF_DOCKER_VOLUMES environmental variable in the first line.
 
