@@ -1,6 +1,6 @@
 # Check BAM coverage
 
-### Step 1 prepare input file
+### Step 1, Prepare input file
 ```
 # the input file has two columns, 1st column is sample_name( or file_name,sample_id), the 2nd column is bam_path.
 
@@ -18,7 +18,7 @@ PE006A1.T.human.sorted.bam	/storage1/fs1/dinglab/Active/Projects/PECGS/PECGS_ana
 
 ```
 
-### step 2 Set up working directory and scripts
+### Step 2, Set up working directory and scripts
 
 ```
 # define alias of python docker
@@ -46,7 +46,7 @@ cut -f 1 "${BamPathFile}" > samples.txt
 
 ```
 
-### Step 3 Call coverage
+### Step 3, Call coverage
 ```
 cd "${outdir}"
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
@@ -55,7 +55,7 @@ bash "${call_coverage}" "${BamPathFile}" "${outdir}"
 # check bjobs, after all jobs are done, proceed with Step4
 ```
 
-### Step 4 Summarize coverage (after step 3 is done)
+### Step 4, Summarize coverage (after step 3 is done)
 ```
 # Initiate the docker in a new terminal
 condapython
