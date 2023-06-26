@@ -51,7 +51,7 @@ bash "${call_coverage}" "${BamPathFile}" "${outdir}"
 
 ### Step 4, Summarize coverage (after step 3 is done)
 ```
-# Initiate the docker in a new terminal
+# Initiate the python docker
 condapython
 conda activate base
 
