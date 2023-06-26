@@ -34,12 +34,6 @@ summarize_coverage="/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/S
 mkdir -p "${outdir}/summary"
 mkdir -p "${outdir}/logs"
 
-# copy scripts to your working directory
-
-cp /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/2023_04_read_depth_PON_MMRF/summary/parse_coverage_results.py $outdir/summary
-
-cp /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/tools/read_depth_mosdepth_v3/read_depth_mosdepth_v3/summary/plot-dist.py $outdir/summary
-
 # generate sample_id file
 cd "${outdir}" || exit 1
 cut -f 1 "${BamPathFile}" > samples.txt
