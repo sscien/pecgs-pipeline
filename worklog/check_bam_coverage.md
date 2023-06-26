@@ -25,12 +25,13 @@ PE006A1.T.human.sorted.bam	/storage1/fs1/dinglab/Active/Projects/PECGS/PECGS_ana
 alias condapython="LSF_DOCKER_VOLUMES='$HOME:$HOME $STORAGE1_DINGLAB:$STORAGE1_DINGLAB $STORAGE1_MATT:$STORAGE1_MATT $SCRATCH1_DINGLAB:$SCRATCH1_DINGLAB' PATH='$STORAGE1_DINGLAB:$PATH $STORAGE1_MATT:$PATH' \
 bsub -Is -q 'general-interactive dinglab-interactive' -G compute-dinglab -M 55G -R 'select[mem>55G] span[hosts=1] rusage[mem=55G]' -a 'docker(austins2/condapython:3.9.6.base)' /bin/bash -l"
 
+# define input file, output dir, and scripts to call coverage and summarize coverage
 outdir="/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/2023_06_pecgs_batch1_coverage_final_review"
 BamPathFile="/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/2023_06_pecgs_batch1_coverage_final_review/PECGS_batch1_re_aligned_bam_v5.txt"
 call_coverage="/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Script/check_bam_coverage/src/1.wes_coverage_from_table.sh"
 summarize_coverage="/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Script/check_bam_coverage/src/plot-dist.py"
 
-
+# create output dir and sub dirs
 mkdir -p "${outdir}/summary"
 mkdir -p "${outdir}/logs"
 
