@@ -57,7 +57,7 @@ condapython
 conda activate base
 
 cd $outdir/summary
-python "${summarize_coverage}" $outdir/*.region.dist.txt >coverage_results_pecgs_align_v5.tsv
+python "${summarize_coverage}" ../*.region.dist.txt >coverage_results_pecgs_align_v5.tsv
 
 # coverage_results_pecgs_align_v5.tsv is the output file that has coverage of each bam at each chromosome
 
