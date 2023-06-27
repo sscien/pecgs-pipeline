@@ -7,18 +7,19 @@ BamPathFile="/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis
 
 mkdir -p "${outdir}/summary"
 mkdir -p "${outdir}/logs"
-cd "${outdir}" || exit 1
-cut -f 1 "${BamPathFile}" > samples.txt
-
-cp /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/2023_04_read_depth_PON_MMRF/wes_coverage_from_table.sh $outdir
 
 cp /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/2023_04_read_depth_PON_MMRF/summary/parse_coverage_results.py $outdir/summary
 
 cp /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/tools/read_depth_mosdepth_v3/read_depth_mosdepth_v3/summary/plot-dist.py $outdir/summary
 
+
+cd "${outdir}" || exit 1
+cut -f 1 "${BamPathFile}" > samples.txt
+
+
 ## step1
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
-bash wes_coverage_from_table.sh $BamPathFile
+bash /storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Script/check_bam_coverage/src/1.wes_coverage_from_table.sh $BamPathFile 
 # step1
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 bash wes_coverage_from_table.sh "${BamPathFile}"
