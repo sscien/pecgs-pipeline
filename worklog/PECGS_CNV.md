@@ -1,4 +1,4 @@
-## CPTAC ccRCC WXS CNV call
+## PECGS WXS CNV call 2023/10/12
 
 ### define the common input arguments as variables and reuse them in each command to avoid repetition
 ```
