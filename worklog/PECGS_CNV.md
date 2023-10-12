@@ -1,6 +1,12 @@
 ## PECGS WXS CNV call 2023/10/12
 
 ### define the common input arguments as variables and reuse them in each command to avoid repetition
+
+New config file that points to the IDT v2 interval list and the gencode v36 gene name set for testing purposes is ready:
+/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/config/config.gatk4scna.compute1.ini.v1.1.pecgs
+3:47
+rest of the command can probably stay. Just need to use the updated config.
+
 ```
 export LSF_DOCKER_VOLUMES="$HOME:$HOME $STORAGE1_DINGLAB:$STORAGE1_DINGLAB $STORAGE1_MATT:$STORAGE1_MATT $SCRATCH1_DINGLAB:$SCRATCH1_DINGLAB"
 
@@ -8,12 +14,12 @@ export LSF_DOCKER_VOLUMES="$HOME:$HOME $STORAGE1_DINGLAB:$STORAGE1_DINGLAB $STOR
 TUMOR_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_2_wxs_cnv_allTumorBAM_full.txt
 NORMAL_BAM_LIST=/storage1/fs1/dinglab/Active/Projects/ysong/Projects/PECGS/Analysis/pecgs_run_list/PECGS_batch1_2_wxs_cnv_normalBAM.txt
 OUTPUT_DIR=/storage1/fs1/dinglab/Active/Projects/PECGS/PECGS_analysis/pecgs_batch1/cnv_run_2
-CONFIG_FILE=/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/config/config.gatk4scna.compute1.ini
+CONFIG_FILE=/storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/config/config.gatk4scna.compute1.ini.v1.1.pecgs
 
 mkdir -p $OUTPUT_DIR
 cd $OUTPUT_DIR
 
-# Step 1 (precall)
+# Step 1 (precall of normals)
 
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA/gatk_somatic.cnv.compute1.sh -p precall -t $TUMOR_BAM_LIST -M $NORMAL_BAM_LIST -o $OUTPUT_DIR -c $CONFIG_FILE
 
