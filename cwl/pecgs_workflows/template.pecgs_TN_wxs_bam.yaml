@@ -45,6 +45,9 @@ common_biallelic:
   class: File
   path: a/file/path
 cpu: a_int
+cytoband:
+  class: File
+  path: a/file/path
 disease: a_string
 microsatellite:
   class: File
@@ -97,7 +100,7 @@ reference_dir:
 rescue_clinvar: false
 rescue_cosmic: false
 sample: a_string
-sample_barcode: a_string
+samples: a_string
 strelka_config:
   class: File
   path: a/file/path
@@ -105,6 +108,9 @@ target_interval_list:
   class: File
   path: a/file/path
 tindaisy_chrlist:
+  class: File
+  path: a/file/path
+tindaisy_rescue_bed:
   class: File
   path: a/file/path
 tindaisy_vep_cache_gz:

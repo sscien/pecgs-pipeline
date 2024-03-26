@@ -15,7 +15,7 @@ COPY . /pecgs-pipeline
 ENV PATH="/miniconda/envs/pecgs/bin:$PATH"
 
 # random string to force rebuild from here
-RUN echo 'zazaagz'
+RUN echo 'z5ilaal'
 
 # pip install -e git://github.com/{ username }/{ reponame }.git@{ tag name }#egg={ desired egg name }
 

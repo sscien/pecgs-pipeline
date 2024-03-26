@@ -4,6 +4,33 @@ A CWL pipeline for running dinglab tools downstream from fastqs/bams. Built for 
 
 Currently runs on WashU RIS compute1.
 
+## Installation
+
+Clone the repository with the following command (note that it is different from the usual github clone command).
+
+```bash
+git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
+```
+
+## Updating the pipeline
+
+Due to submodule crazyness, the easiest way to update the pipeline is to remove the repository and reinstall.
+
+```bash
+rm -rf pecgs-pipeline
+git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
+```
+
+If you would like to try and update the pipeline without removing it, you can run the following.
+
+```bash
+git pull
+git submodule update submodules/
+```
+
+This command will sometimes fail due to intermediary files, and is a pain to try and fix. Usually the easier solution is just deleting the repository and reinstalling.
+
+
 ## Overview
 
 #### Tools
@@ -14,8 +41,9 @@ The following tools are incorporated into the pecgs-pipeline:
   + Only run in pipelines where wxs/wgs fastqs are present as inputs
   + [github repo](https://github.com/estorrs/align-dnaseq)
 + Somatic variant calling
-  + Runs TinDaisy variant caller
-  + [github repo](https://github.com/ding-lab/TinDaisy)
+  + Runs TinDaisy and somaticwrapper variant callers
+    + [TinDaisy github repo](https://github.com/ding-lab/TinDaisy)
+    + [somaticwrapper github repo](https://github.com/estorrs/pecgs-somaticwrapper)
 + Germline variant calling
   + Runs TinJasmine variant caller
   + [github repo](https://github.com/ding-lab/TinJasmine)
@@ -50,6 +78,12 @@ There are multiple pipeline variants that are dependent on available input data 
 
 The inputs to the pipeline are specified in a **run list** file. See an example run list [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt). This is a tab-sperated file with the following columns (some input related columns are dependent on pipeline variant, and are listed below):
 
+**Important: please limit the number of cases in the run list to less than ~10-15 for each run of the pipeline. Cromwell leaves around a lot of temporary files that are quite large and can quickly fill up our labs `/scratch1` allocation if too many cases are run simultaneously. If you have a large number of cases to run, please run them in batches one after another.**
+
+**Important: please do not include spaces or special characters in the run id or case id, as this could lead to issues when the pipeline is naming files. Only use alphanumeric characters (A-Z, 0-9), hyphens (-), and underscores(_).** 
+
+**Important: It is important that there are no missing values in the run list and sequencing info files. If you do do not have a value for a particular cell then make up a dummy value.** 
+
 *Common columns*
 
 + run_id
@@ -63,8 +97,12 @@ The inputs to the pipeline are specified in a **run list** file. See an example 
 
 These columns will change depending on which pipeline variant is being used and are listed for each pipeline in the section below.
 
++ project
+  + used in WXS pipelines. Specifies project specific cofigurations. Currently, this is used in selecting BED files for VAF rescue in TinDaisy and somaticwrapper. If you want the bed files to be correct, make sure the project name is correct. See the `disease` bullet point for more details.
 + disease
-  + used in WXS pipelines. Specifies the cancer type of a given case. Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
+  + used in WXS pipelines. Specifies the cancer type of a given case. Is used in two places in the pipeline
+    + Is used in the druggability pipeline for the `-at` annotate trials keyword. For the annotate trials keyword to be used, disease must be one of the following: ['MM', 'CRC', 'CHOL']. If disease is not one of the values in the previous list, then the disease will default to '' and annotate trials keyword will not be used in the druggability pipeline.
+    + Is used to select the VAF rescue bed file to use with TinDaisy. If the project is PECGS, CHOL, MM, and CHOL are valid diseases and a bed file will be selected specfic to those cancer types that has been made for the PECGS project. If project is TCGA, then all cancer type [abbreviations](https://gdc.cancer.gov/resources-tcga-users/tcga-code-tables/tcga-study-abbreviations) in TCGA are valid. Otherwise, a default list of 299 genes from the pancan driver paper will be used. The potential bed files that can be used are [here](https://github.com/estorrs/wombat/tree/master/wombat/beds).
 
 For file and directory path inputs, there will be two columns in the run list: one specifying the filepath, and another specifying the [universally unique identifier (UUID)](https://en.wikipedia.org/wiki/Universally_unique_identifier) of the file. The file uuid is for tracking purposes, so if you don't care too much about that you can just use integers or make up a random string here. For PE-CGS runs please use the uuid for the file that is in the bammap.
 
@@ -76,27 +114,27 @@ The following pipelines are available:
     + Tumor WXS fastqs
     + Normal WXS fastqs
   + run list columns
-    + `run_id`, `case_id`, `disease`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
+    + `run_id`, `case_id`, `project`, `disease`, `run_uuid`, `wxs_normal_R1.filepath`, `wxs_normal_R1.uuid`, `wxs_normal_R2.filepath`, `wxs_normal_R2.uuid`, `wxs_tumor_R1.filepath`, `wxs_tumor_R1.uuid`, `wxs_tumor_R2.filepath`, `wxs_tumor_R2.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_fq/run_list.txt)
 + **pecgs_TN_wxs_bam**
   + inputs
     + Tumor WXS bam
     + Normal WXS bam
   + run list columns
-    + `run_id`, `case_id`, `disease`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
+    + `run_id`, `case_id`, `project`, `disease`, `run_uuid`, `wxs_normal_bam.filepath`, `wxs_normal_bam.uuid`, `wxs_tumor_bam.filepath`, `wxs_tumor_bam.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wxs_bam/run_list.txt)
 + **pecgs_TN_wgs_bam**
   + inputs
     + Tumor WGS bam
     + Normal WGS bam
   + run list columns
-    + `run_id`, `case_id`, `run_uuid`, `wgs_normal_bam.filepath`, `wgs_normal_bam.uuid`, `wgs_tumor_bam.filepath`, `wgs_tumor_bam.uuid`
+    + `run_id`, `case_id`, `project`, `run_uuid`, `wgs_normal_bam.filepath`, `wgs_normal_bam.uuid`, `wgs_tumor_bam.filepath`, `wgs_tumor_bam.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_TN_wgs_bam/run_list.txt)
 + **pecgs_T_rna_fq**
   + inputs
     + Tumor RNA-seq fastqs
   + run list columns
-    + `run_id`, `case_id`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`
+    + `run_id`, `case_id`, `project`, `run_uuid`, `rna-seq_tumor_R1.filepath`, `rna-seq_tumor_R1.uuid`, `rna-seq_tumor_R2.filepath`, `rna-seq_tumor_R2.uuid`
   + [example run list](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples/pecgs_T_rna_fq/run_list.txt)
 
 #### Outputs
@@ -113,6 +151,9 @@ The outputs are the following and seperated by pipeline input data type:
     + tindaisy_output_vcf_all
     + tindaisy_output_vcf_clean
     + tindaisy_output_maf_clean
+    + somaticwrapper_dnp_annotated_maf
+    + somaticwrapper_dnp_annotated_coding_maf
+    + somaticwrapper_withmutect_maf
   + Germline variant calling
     + tinjasmine_output_vcf_all
     + tinjasmine_output_vcf_clean
@@ -151,12 +192,15 @@ If you require an intermediate output for any of the tools, they can be extracte
 
 Quick Note: Example scripts for all the below steps/commands for each pipeline variant are available [here](https://github.com/ding-lab/pecgs-pipeline/blob/master/examples)
 
-First, clone the repository with the following command (note that it is different from the usual github clone command).
+First, if you haven't already, clone the repository with the following command (note that it is different from the usual github clone command).
+
+```bash
+git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
+```
 
 Then navigate inside the src/compute1 directory
 
 ```bash
-git clone --recurse-submodules https://github.com/ding-lab/pecgs-pipeline.git
 cd pecgs-pipeline/src/compute1
 ```
 
@@ -175,13 +219,13 @@ The pecgs-pipeline is most easily run on compute1 from an interactive docker ses
 ```bash
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 export PATH="/miniconda/envs/pecgs/bin:$PATH"
-bsub -q dinglab-interactive -G compute-dinglab -Is -a 'docker(estorrs/pecgs-pipeline:0.0.1)' '/bin/bash'
+bsub -q dinglab-interactive -G compute-dinglab -Is -a 'docker(estorrs/pecgs-pipeline:0.0.2)' '/bin/bash'
 ```
 NOTE: if the directory you intend to use for pipeline outputs is not in `/storage1/fs1/dinglab/Active` or `/scratch1/fs1/dinglab` you will need to add that path to the LSF_DOCKER_VOLUMES environmental variable in the first line.
 
 You should now be inside a running container.
 
-To generate the run directory, execute the following command. Replace PIPELINE_NAME with the pipeline variant you would like to run (i.e. pecgs_TN_wxs_bam), RUN_LIST with the filepath of the run list describing samples you would like to run (see inputs section for more details), and RUN_DIR with the absolute filepath where you would like the runs to execute
+To generate the run directory, execute the following command. Replace PIPELINE_NAME with the pipeline variant you would like to run (i.e. pecgs_TN_wxs_bam), RUN_LIST with the filepath of the run list describing samples you would like to run (see inputs section for more details), and RUN_DIR with the absolute filepath where you would like the runs to execute. The RUN_DIR **must** be on `/scratch1`. `/storage1` has cacheing issues that may cause some steps of the pipeline to fail.
 
 ```bash
 python generate_run_commands.py make-run PIPELINE_NAME RUN_LIST RUN_DIR

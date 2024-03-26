@@ -4,6 +4,7 @@ import logging
 import random
 import shutil
 import subprocess
+import yaml
 from pathlib import Path
 
 import pandas as pd
@@ -66,6 +67,7 @@ def make_run():
     for k, v in run_map.items():
         v['disease'] = d[k]['disease']
         v['case_id'] = d[k]['case_id']
+        v['project'] = d[k]['project']
 
     if args.sequencing_info is not None:
         sequencing_info = pd.read_csv(
@@ -77,11 +79,16 @@ def make_run():
     fp = os.path.realpath(__file__)
     tool_root = '/'.join(fp.split('/')[:-3])
 
+    if args.input_config is not None:
+        input_kwargs = yaml.safe_load(open(args.input_config))
+    else:
+        input_kwargs = None
+
     if args.pipeline_name == 'pecgs_TN_wxs_fq':
         job_cmds = pecgs.from_run_list(
             run_map, args.run_dir, tool_root, args.pipeline_name,
             sequencing_info=sequencing_info, proxy_run_dir=args.proxy_run_dir,
-            queue=args.queue)
+            input_kwargs=input_kwargs, queue=args.queue)
     elif args.pipeline_name in ['pecgs_TN_wxs_bam', 'pecgs_TN_wgs_bam', 'pecgs_T_rna_fq']:
         job_cmds = pecgs.from_run_list(
             run_map, args.run_dir, tool_root, args.pipeline_name,

@@ -32,6 +32,8 @@ inputs:
   type: File
 - id: protein_coding_gene
   type: File
+- id: cytoband
+  type: File
 - id: pool_of_normals
   type: File
 - id: microsatellite
@@ -74,6 +76,8 @@ inputs:
   type: File
 - id: pindel_config
   type: File
+- id: tindaisy_rescue_bed
+  type: File
 - id: centromere
   type: File
 - id: tinjasmine_chrlist
@@ -108,6 +112,9 @@ outputs:
 - id: gene_level_cnv
   outputSource: run_cnv/gene_level_cnv
   type: File
+- id: arm_level_cnv
+  outputSource: run_cnv/arm_level_cnv
+  type: File
 - id: msisensor_output_summary
   outputSource: run_msisensor/output_summary
   type: File
@@ -119,6 +126,15 @@ outputs:
   type: File
 - id: msisensor_output_somatic
   outputSource: run_msisensor/output_somatic
+  type: File
+- id: somaticwrapper_dnp_annotated_maf
+  outputSource: run_somaticwrapper/dnp_annotated_maf
+  type: File
+- id: somaticwrapper_dnp_annotated_coding_maf
+  outputSource: run_somaticwrapper/dnp_annotated_coding_maf
+  type: File
+- id: somaticwrapper_withmutect_maf
+  outputSource: run_somaticwrapper/withmutect_maf
   type: File
 - id: tindaisy_output_maf_clean
   outputSource: run_tindaisy/output_maf_clean
@@ -176,11 +192,14 @@ steps:
     source: common_biallelic
   - id: protein_coding_gene
     source: protein_coding_gene
+  - id: cytoband
+    source: cytoband
   - id: pool_of_normals
     source: pool_of_normals
   label: run_cnv
   out:
   - id: gene_level_cnv
+  - id: arm_level_cnv
   run: ../../submodules/pecgs-cnv/cwl/cnv_workflow.cwl
 - id: run_msisensor
   in:
@@ -203,6 +222,24 @@ steps:
   - id: output_germline
   - id: output_somatic
   run: ../msisensor/msisensor_workflow.cwl
+- id: run_somaticwrapper
+  in:
+  - id: sample
+    source: sample
+  - id: tumor_bam
+    source: tumor_wxs_bam
+  - id: normal_bam
+    source: normal_wxs_bam
+  - id: reference
+    source: reference
+  - id: rescue_genes
+    source: tindaisy_rescue_bed
+  label: run_somaticwrapper
+  out:
+  - id: dnp_annotated_maf
+  - id: dnp_annotated_coding_maf
+  - id: withmutect_maf
+  run: ../../submodules/pecgs-somaticwrapper/cwl/somaticwrapper.cwl
 - id: run_tindaisy
   in:
   - id: tumor_bam
@@ -247,15 +284,17 @@ steps:
     source: rescue_cosmic
   - id: rescue_clinvar
     source: rescue_clinvar
+  - id: VAFRescueBED
+    source: tindaisy_rescue_bed
   label: run_tindaisy
   out:
   - id: output_maf_clean
   - id: output_vcf_clean
   - id: output_vcf_all
-  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.cwl
+  run: ../../submodules/TinDaisy/cwl/workflows/tindaisy2.7.0-vep102_vafrescue.cwl
 - id: run_tinjasmine
   in:
-  - id: sample_barcode
+  - id: samples
     source: sample
   - id: bam
     source: normal_wxs_bam
@@ -280,7 +319,7 @@ steps:
   - id: clean_VCF
   - id: all_call_vcf
   - id: clean_MAF
-  run: ../../submodules/TinJasmine/cwl/TinJasmine.v1.2.vep-100.cwl
+  run: ../../submodules/TinJasmine/cwl/TinJasmine.v1.4.vep-102.cwl
 - id: run_neoscan
   in:
   - id: maf
