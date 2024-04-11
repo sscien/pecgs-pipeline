@@ -1,17 +1,15 @@
 # step 0 generate catalog of WXS fastqs
-
+```
 #!/bin/bash
 
 # Define the base directory containing the sample subdirectories
-```
-BASE_DIR="/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ"
-```
-# Output file
-```
-OUTPUT_FILE="/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/Catalog/MM_proteomics_WXS_tumor_FASTQ_tracking_sheet.csv"
-```
 
-```
+BASE_DIR="/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ"
+
+# Output file
+
+OUTPUT_FILE="/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/Catalog/MM_proteomics_WXS_tumor_FASTQ_tracking_sheet.csv"
+
 # Header
 echo -e "SampleID\tfastq1_compute1\tfastq2_compute1" > $OUTPUT_FILE
 
