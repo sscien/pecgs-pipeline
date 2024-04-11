@@ -26,13 +26,28 @@ find $BASE_DIR -type d -mindepth 1 -maxdepth 1 | while read -r SAMPLE_DIR; do
 done
 ```
 
+# format of fastq input table
+```
+ head /storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/Catalog/MM_proteomics_WXS_tumor_FASTQ_tracking_sheet.csv
+SampleID	fastq1_compute1	fastq2_compute1
+MMY-65371-Jn1D1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-65371-Jn1D1/MMY-65371-Jn1D1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-65371-Jn1D1/MMY-65371-Jn1D1_2.fastq.gz
+MMY-52772-Jn1D1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-52772-Jn1D1/MMY-52772-Jn1D1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-52772-Jn1D1/MMY-52772-Jn1D1_2.fastq.gz
+MMY-57173-Jn1D1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-57173-Jn1D1/MMY-57173-Jn1D1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-57173-Jn1D1/MMY-57173-Jn1D1_2.fastq.gz
+MMY-91621-Jn1D1_1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-91621-Jn1D1_1/MMY-91621-Jn1D1_1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-91621-Jn1D1_1/MMY-91621-Jn1D1_1_2.fastq.gz
+MMY-10829-Jn1D1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-10829-Jn1D1/MMY-10829-Jn1D1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-10829-Jn1D1/MMY-10829-Jn1D1_2.fastq.gz
+MMY-70219-Jn1D1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-70219-Jn1D1/MMY-70219-Jn1D1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-70219-Jn1D1/MMY-70219-Jn1D1_2.fastq.gz
+MMY-90656-Jn1D1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-90656-Jn1D1/MMY-90656-Jn1D1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-90656-Jn1D1/MMY-90656-Jn1D1_2.fastq.gz
+MMY-76339-Jn1D1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-76339-Jn1D1/MMY-76339-Jn1D1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-76339-Jn1D1/MMY-76339-Jn1D1_2.fastq.gz
+MMY-11757-Jn1D1.T	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-11757-Jn1D1/MMY-11757-Jn1D1_1.fastq.gz	/storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/WXS/FASTQ/MMY-11757-Jn1D1/MMY-11757-Jn1D1_2.fastq.gz
+```
+
 # step1 fq to trimmed fq
 ```
 export LSF_DOCKER_VOLUMES="/storage1/fs1/dinglab/Active:/storage1/fs1/dinglab/Active /scratch1/fs1/dinglab:/scratch1/fs1/dinglab"
 
 mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/multiple_myeloma/MM_proteomic/WXS/trimmed_fq/logs/
 ```
-# use scratch1 as output folder, storage1 will fail because too big temp files being generated
+# using scratch1 as output folder, using storage1 will fail because too big temp files being generated
 ```
 bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/Catalog/MM_proteomics_WXS_tumor_FASTQ_tracking_sheet.csv -o /scratch1/fs1/dinglab/Active/Projects/ysong/multiple_myeloma/MM_proteomic/WXS/trimmed_fq -p trimGalore
 ```
