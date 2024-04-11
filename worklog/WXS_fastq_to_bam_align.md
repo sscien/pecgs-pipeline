@@ -49,7 +49,7 @@ mkdir -p /scratch1/fs1/dinglab/Active/Projects/ysong/multiple_myeloma/MM_proteom
 ```
 # using scratch1 as output folder, using storage1 will fail because too big temp files being generated
 ```
-bash /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/austins2/tools/BWA-alignment/config.human.compute1.ini -t /storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/Catalog/MM_proteomics_WXS_tumor_FASTQ_tracking_sheet.csv -o /scratch1/fs1/dinglab/Active/Projects/ysong/multiple_myeloma/MM_proteomic/WXS/trimmed_fq -p trimGalore
+bash /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/trimGalore_then_BWA.compute1.36L.sh -c /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/BWA-alignment/config.human.gencode_36_compute1.ini -t /storage1/fs1/dinglab/Active/Projects/multiple_myeloma/MM_proteomic/Catalog/MM_proteomics_WXS_tumor_FASTQ_tracking_sheet.csv -o /scratch1/fs1/dinglab/Active/Projects/ysong/multiple_myeloma/MM_proteomic/WXS/trimmed_fq -p trimGalore
 ```
 
 ```
