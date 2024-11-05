@@ -79,6 +79,24 @@ failed run
 /storage1/fs1/dinglab/Active/Projects/austins2/tools/GATK4SCNA//src/2.run.gatk4scna.createPON.sh: line 44:    12 Killed                  ${JAVA} -Dsamjdk.use_async_io_read_samtools=false -Dsamjdk.use_async_io_write_samtools=true -Dsamjdk.use_async_io_write_tribble=false -Dsamjdk.compression_level=2 -Xmx8g -jar ${GATK} CreateReadCountPanelOfNormals --minimum-interval-median-percentile 5.0 -O ${DIR}/gatk4scnaPON.Normal.hdf5 $all_normal_hdf5
 ```
 
+## debug
+
+```
+## successfully run after increase PON MEM to 50GB in /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/GATK4SCNA_v3/gatk_somatic.cnv.compute1.sh
+###############################
+##  STEP-2   Pool Normal
+###############################
+
+if [[ $program == "pon" ]] || [[ $program == "s2" ]]; then
+    
+    if [[ $hdf5Dir == '' ]]; then
+        hdf5Dir=$outdir/PON
+    fi
+    
+    bash $submitJob 50 8 gatk4cn.s2.pon "bash $scriptDir/src/2.run.gatk4scna.createPON.sh -C ${config} -D ${hdf5Dir}"
+
+fi
+```
 
 
 ## PECGS WXS CNV call 2023/11/02
