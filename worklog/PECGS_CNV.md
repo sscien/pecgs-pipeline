@@ -83,6 +83,8 @@ failed run
 
 ```
 ## successfully run after increase PON MEM to 50GB in /storage1/fs1/dinglab/Active/Projects/ysong/pipelines/GATK4SCNA_v3/gatk_somatic.cnv.compute1.sh
+## previouly it is bash $submitJob 10 1 gatk4cn.s2.pon
+
 ###############################
 ##  STEP-2   Pool Normal
 ###############################
